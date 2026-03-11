@@ -95,7 +95,7 @@
         </button>
         <button class="quick-btn" data-target="emergency-section">
           <div class="quick-icon emergency-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2.8 19a1 1 0 0 0 .87 1.5h16.66A1 1 0 0 0 21.2 19L12 3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
           </div>
           <span>Emergency</span>
         </button>
@@ -248,8 +248,11 @@
         <div class="zone-panel" id="zonePanel">
           <div class="zone-panel-inner">
             <button class="zone-close" id="zoneClose">✕</button>
-            <div class="zone-icon" id="zoneIcon"></div>
-            <h3 class="zone-title" id="zoneTitle">Room</h3>
+            <div class="zone-kicker">Room Guide</div>
+            <div class="zone-header">
+              <div class="zone-icon" id="zoneIcon"></div>
+              <h3 class="zone-title" id="zoneTitle">Room</h3>
+            </div>
             <div class="zone-content" id="zoneContent"></div>
           </div>
         </div>
@@ -793,14 +796,14 @@
             +1 (809) 555-0002
           </a>
         </div>
-        <div class="emergency-card">
-          <div class="emergency-card-label">National Emergency</div>
-          <div class="emergency-card-name">Police / Fire / Ambulance</div>
-          <a href="tel:911" class="emergency-call-btn alert">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41a2 2 0 0 1 1.99-2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6.18 6.18l1.76-1.76a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-            911
-          </a>
-        </div>
+          <div class="emergency-card">
+            <div class="emergency-card-label">National Emergency</div>
+            <div class="emergency-card-name">Police / Fire / Ambulance</div>
+            <a href="tel:911" class="emergency-call-btn alert">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2.8 19a1 1 0 0 0 .87 1.5h16.66A1 1 0 0 0 21.2 19L12 3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+              911
+            </a>
+          </div>
       </div>
     </div>
   </section>

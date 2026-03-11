@@ -9,40 +9,51 @@
 const nav = document.getElementById('nav');
 const hamburger = document.getElementById('hamburger');
 const navLinks = document.getElementById('nav-links');
+const heroSection = document.getElementById('hero');
+const overlay = document.getElementById('overlay');
 
-window.addEventListener('scroll', () => {
-  if (window.scrollY > 60) {
-    nav.classList.add('scrolled');
-  } else {
-    nav.classList.remove('scrolled');
+function closeNavMenu() {
+  navLinks.classList.remove('open');
+  hamburger.classList.remove('open');
+  hamburger.setAttribute('aria-expanded', false);
+  overlay.classList.remove('show');
+}
+
+function updateNavVisibility() {
+  if (!heroSection) return;
+
+  const revealPoint = Math.max(heroSection.offsetHeight - nav.offsetHeight - 24, 80);
+  const shouldShowNav = window.scrollY >= revealPoint;
+
+  nav.classList.toggle('visible', shouldShowNav);
+  nav.classList.toggle('scrolled', shouldShowNav);
+
+  if (!shouldShowNav) {
+    closeNavMenu();
   }
-}, { passive: true });
+}
+
+window.addEventListener('scroll', updateNavVisibility, { passive: true });
+window.addEventListener('resize', updateNavVisibility);
 
 /* === HAMBURGER MENU === */
 hamburger.addEventListener('click', () => {
   const isOpen = navLinks.classList.toggle('open');
   hamburger.classList.toggle('open', isOpen);
   hamburger.setAttribute('aria-expanded', isOpen);
-  document.getElementById('overlay').classList.toggle('show', isOpen);
+  overlay.classList.toggle('show', isOpen);
 });
 
 // Close nav on link click
 navLinks.querySelectorAll('.nav-link').forEach(link => {
   link.addEventListener('click', () => {
-    navLinks.classList.remove('open');
-    hamburger.classList.remove('open');
-    hamburger.setAttribute('aria-expanded', false);
-    document.getElementById('overlay').classList.remove('show');
+    closeNavMenu();
   });
 });
 
 // Close on overlay click
-document.getElementById('overlay').addEventListener('click', () => {
-  navLinks.classList.remove('open');
-  hamburger.classList.remove('open');
-  hamburger.setAttribute('aria-expanded', false);
-  document.getElementById('overlay').classList.remove('show');
-
+overlay.addEventListener('click', () => {
+  closeNavMenu();
   // Also close zone panel
   closeZonePanel();
 });
@@ -155,7 +166,7 @@ const zoneData = {
     </ul>`
   },
   living: {
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 9V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v2"/><path d="M2 11v5a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1z"/><path d="M4 18v2"/><path d="M20 18v2"/><path d="M12 4v5"/></svg>`,
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="12" rx="2"/><path d="M9 20h6"/><path d="M12 17v3"/></svg>`,
     title: 'Living / Dining',
     content: `<ul>
       <li>65" Samsung Smart TV — streaming apps pre-installed.</li>
@@ -168,7 +179,7 @@ const zoneData = {
     </ul>`
   },
   kitchen: {
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="7" rx="1"/><path d="M5 10v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8"/></svg>`,
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 10h14v2a6 6 0 0 1-6 6h-2a6 6 0 0 1-6-6v-2Z"/><path d="M8 10V8.5A1.5 1.5 0 0 1 9.5 7h5A1.5 1.5 0 0 1 16 8.5V10"/><path d="M19 11h1a1 1 0 0 1 0 2h-1"/><path d="M5 11H4a1 1 0 0 0 0 2h1"/></svg>`,
     title: 'Kitchen',
     content: `<ul>
       <li>4-burner electric stove — turn all knobs to OFF after cooking.</li>
@@ -222,17 +233,15 @@ const zoneData = {
   },
   closet: {
     icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3h12a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><path d="M12 3v18"/><circle cx="10" cy="12" r="0.8" fill="currentColor"/><circle cx="14" cy="12" r="0.8" fill="currentColor"/></svg>`,
-    title: 'Linen Closet',
+    title: 'Closets',
     content: `<ul>
-      <li>Walk-in closet for Bedroom #1.</li>
-      <li>Hangers provided — please return them before checkout.</li>
-      <li>Safe on top shelf — set your own 4-digit code.</li>
-      <li>Iron and ironing board on the left side.</li>
-      <li>Extra blankets and pillows on the upper shelf.</li>
+      <li><strong>Linen closet:</strong> extra towels and bathroom essentials.</li>
+      <li><strong>Bedroom #2 closet:</strong> standard hanging/storage space for guests staying in Bedroom #2.</li>
+      <li><strong>Walk-in closet:</strong> for Bedroom #1, with hangers, the safe, iron, ironing board, and extra blankets and pillows.</li>
     </ul>`
   },
   office: {
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>`,
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l3.5-.8L18.8 7.9a1.8 1.8 0 0 0 0-2.5l-.2-.2a1.8 1.8 0 0 0-2.5 0L4.8 16.5 4 20Z"/><path d="M13.5 7.5l3 3"/></svg>`,
     title: 'Office',
     content: `<ul>
       <li>Work desk with ergonomic chair and good natural light.</li>
@@ -253,7 +262,7 @@ const zoneData = {
     </ul>`
   },
   balcony: {
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="8 6 2 12 8 18"/><polyline points="16 6 22 12 16 18"/></svg>`,
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v3"/><path d="M12 19v3"/><path d="M4.93 4.93l2.12 2.12"/><path d="M16.95 16.95l2.12 2.12"/><path d="M2 12h3"/><path d="M19 12h3"/><path d="M4.93 19.07l2.12-2.12"/><path d="M16.95 7.05l2.12-2.12"/></svg>`,
     title: 'Balcony',
     content: `<ul>
       <li>Sliding door — lift handle slightly upward, then slide right.</li>
@@ -264,7 +273,7 @@ const zoneData = {
     </ul>`
   },
   powder: {
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 4h10v6a5 5 0 0 1-10 0V4Z"/><path d="M12 15v5"/><path d="M9 20h6"/></svg>`,
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="7" r="1.5"/><circle cx="12" cy="5.5" r="1"/><circle cx="14.5" cy="8" r="1.2"/><rect x="5" y="11" width="14" height="7" rx="3.5"/><path d="M9 14h6"/></svg>`,
     title: 'Powder Room',
     content: `<ul>
       <li>Guest powder room near the entry corridor.</li>
@@ -284,6 +293,12 @@ function openZonePanel(zoneKey) {
   const data = zoneData[zoneKey];
   if (!data) return;
 
+  if (zonePanel.classList.contains('open')) {
+    zonePanel.classList.remove('swap');
+    void zonePanel.offsetWidth;
+    zonePanel.classList.add('swap');
+  }
+
   zoneIcon.innerHTML = data.icon;
   zoneTitle.textContent = data.title;
   zoneContent.innerHTML = data.content;
@@ -297,6 +312,7 @@ function openZonePanel(zoneKey) {
 
 function closeZonePanel() {
   zonePanel.classList.remove('open');
+  zonePanel.classList.remove('swap');
   document.querySelectorAll('.map-zone').forEach(z => z.classList.remove('active'));
 }
 
@@ -479,15 +495,15 @@ updateLunarTime();
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
     closeZonePanel();
-    navLinks.classList.remove('open');
-    hamburger.classList.remove('open');
-    document.getElementById('overlay').classList.remove('show');
+    closeNavMenu();
   }
 });
 
 
 /* === PAGE LOAD ANIMATION SEQUENCE === */
 document.addEventListener('DOMContentLoaded', () => {
+  updateNavVisibility();
+
   // Stagger hero elements
   const heroElements = [
     document.querySelector('.hero-eyebrow'),
