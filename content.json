@@ -4,10 +4,10 @@
     "location": "Evaristo Morales, Santo Domingo",
     "heroEyebrow": "Guest Welcome Guide",
     "heroTitle": "Welcome to Casa Karaya",
-    "heroSubtitle": "A calm, polished home base for your stay. Everything you need is here, from room notes to appliance instructions.",
+    "heroSubtitle": "I put this guide together to help you settle in quickly and feel at home. Everything important is here, from the basics on arrival to the little details that make the stay easier.",
     "ctaLabel": "Explore the Guide",
-    "heroNote": "Named for the Taíno moon goddess. Your home, illuminated.",
-    "footerNote": "Keep this guide updated as the home changes so each guest gets the right information."
+    "heroNote": "Casa Karaya is meant to feel warm, easy, and welcoming from the moment you arrive.",
+    "footerNote": "I hope this place feels easy to settle into. If anything is unclear or you need something, please reach out."
   },
   "quickFacts": [
     {
@@ -18,157 +18,157 @@
     {
       "label": "Check-in",
       "value": "3:00 PM",
-      "detail": "Self check-in with keypad or host instructions."
+      "detail": "I will share the exact arrival details before check-in so getting in feels easy."
     },
     {
       "label": "Check-out",
       "value": "11:00 AM",
-      "detail": "Please leave keys on the kitchen counter before departure."
+      "detail": "Before heading out, please leave the keys on the kitchen counter and send me a quick note."
     },
     {
       "label": "Parking",
       "value": "Space #12",
-      "detail": "Use the garage gate fob if assigned."
+      "detail": "If parking is included for your stay, please use the assigned space and keep the gate control with you."
     },
     {
       "label": "Host",
       "value": "+1 (809) 555-0001",
-      "detail": "Best for urgent guest questions."
+      "detail": "This is the best number for anything you need during your stay."
     }
   ],
   "areas": [
     {
       "name": "Living Room",
-      "summary": "The main place to relax, gather, and unwind.",
+      "summary": "This is the heart of the apartment and the easiest place to settle in when you arrive.",
       "instructions": [
-        "The TV remote is on the media console.",
-        "Please keep balcony doors closed while the A/C is running.",
-        "Extra throw blankets are stored in the sideboard.",
-        "The dimmer switch controls the main room lighting."
+        "You will usually find the TV remote on the media console.",
+        "If you are running the A/C, please keep the balcony doors closed so the room stays cool.",
+        "Extra throw blankets are in the sideboard if you want to get comfortable.",
+        "The main room lights are on a dimmer, so feel free to adjust them to whatever feels right."
       ]
     },
     {
       "name": "Primary Bedroom",
-      "summary": "Quiet retreat with blackout curtains and bedside charging.",
+      "summary": "I like this room to feel calm and restful, especially if you are arriving after a long day.",
       "instructions": [
-        "A/C remote is on the right-hand nightstand.",
-        "Use the curtain pull gently to avoid tangling.",
-        "Extra pillows and blankets are in the closet.",
-        "Please do not place luggage on the bedding."
+        "The A/C remote is usually on the right nightstand.",
+        "Please use the curtain pull gently so the blackout curtains do not tangle.",
+        "Extra pillows and blankets are in the closet if you want them.",
+        "If you can, please keep luggage off the bedding."
       ]
     },
     {
       "name": "Guest Bedroom",
-      "summary": "Comfortable overflow sleeping space for extra guests.",
+      "summary": "This room is set up to feel simple, comfortable, and ready for extra guests.",
       "instructions": [
-        "Closet hangers are available for short stays.",
+        "There are closet hangers available for shorter or longer stays.",
         "Fresh towels are placed on the bed before arrival.",
-        "Let the host know if an extra set of linens is needed."
+        "If you need an extra set of linens, just let me know."
       ]
     },
     {
       "name": "Kitchen",
-      "summary": "Stocked for simple meals, coffee, and everyday use.",
+      "summary": "The kitchen is set up for easy breakfasts, simple meals, and everyday use.",
       "instructions": [
-        "Salt, pepper, oil, and basic seasonings are in the upper cabinet.",
+        "Salt, pepper, oil, and a few basic seasonings are in the upper cabinet.",
         "Trash is under the sink and recycling is in the blue bin.",
-        "Please wipe counters and stovetop after cooking.",
-        "Filtered water pitcher is kept in the refrigerator."
+        "Please give the counters and stovetop a quick wipe after cooking.",
+        "The filtered water pitcher is in the refrigerator."
       ]
     },
     {
       "name": "Balcony",
-      "summary": "Outdoor sitting area with open city views.",
+      "summary": "The balcony is one of my favorite spots, especially if you want a little air or a quieter moment.",
       "instructions": [
-        "Do not leave cushions outside during heavy rain.",
-        "No smoking on the balcony.",
-        "Please avoid placing items on the railing."
+        "Please do not leave cushions outside if heavy rain is coming through.",
+        "The balcony is also non-smoking.",
+        "Please avoid placing anything on the railing."
       ]
     }
   ],
   "appliances": [
     {
       "name": "Air Conditioning",
-      "summary": "Use the remote to adjust room temperature and mode.",
+      "summary": "The A/C is easy to use once you have the remote, and it cools the apartment quickly.",
       "instructions": [
         "Press Power to turn the unit on or off.",
-        "Recommended setting is 23 to 25 C for comfort.",
-        "Please turn the unit off when leaving for long periods.",
-        "Keep windows and balcony doors closed while cooling."
+        "I usually recommend 23 to 25 C for a comfortable setting.",
+        "If you will be out for a while, please turn it off before leaving.",
+        "Keep windows and balcony doors closed while it is running."
       ]
     },
     {
       "name": "Water Heater",
-      "summary": "Turn on before showers if hot water is needed.",
+      "summary": "If you want a hot shower, just give the heater a little time before using it.",
       "instructions": [
-        "Switch the heater on at the panel before use.",
-        "Wait 10 to 15 minutes for hot water.",
-        "Turn the heater off again after use to save energy."
+        "Switch the heater on at the panel before showering.",
+        "Give it about 10 to 15 minutes to warm up.",
+        "When you are done, please switch it off again."
       ]
     },
     {
       "name": "Washer and Dryer",
-      "summary": "Laundry setup for small guest loads.",
+      "summary": "The washer and dryer are there for lighter guest loads during your stay.",
       "instructions": [
-        "Use one detergent pod per load.",
+        "One detergent pod per load is usually enough.",
         "Cold water is best for most fabrics.",
-        "Clean the dryer lint trap before each cycle.",
-        "Leave the washer door slightly open after use."
+        "Please clean the dryer lint trap before each cycle.",
+        "Leave the washer door slightly open after you finish."
       ]
     },
     {
       "name": "Coffee Machine",
-      "summary": "Single-serve machine with pods stored nearby.",
+      "summary": "If you want an easy coffee at home, everything you need should be right there.",
       "instructions": [
         "Fill the rear reservoir with fresh water.",
-        "Insert a pod and press the desired cup size.",
-        "Discard used pods after brewing.",
-        "Extra pods are in the cabinet above the machine."
+        "Insert a pod and choose the cup size you want.",
+        "Discard the used pod after brewing.",
+        "You will find extra pods in the cabinet above the machine."
       ]
     },
     {
       "name": "Smart TV",
-      "summary": "Streaming-ready television in the living room.",
+      "summary": "The living room TV is ready for streaming if you want to unwind at home.",
       "instructions": [
-        "Use the Home button on the Samsung remote.",
-        "Guests may log into personal streaming accounts if needed.",
-        "Please log out of personal accounts before checkout."
+        "Use the Home button on the Samsung remote to get started.",
+        "Feel free to log into your own streaming accounts during your stay.",
+        "Before checkout, please log out of any personal accounts."
       ]
     }
   ],
   "houseRules": [
     {
       "title": "No Smoking",
-      "description": "The apartment and balcony are both smoke-free."
+      "description": "Please keep both the apartment and the balcony smoke-free."
     },
     {
       "title": "Respect Quiet Hours",
-      "description": "Please keep noise low from 10 PM to 8 AM."
+      "description": "Please keep things quiet from 10 PM to 8 AM out of respect for the neighbors."
     },
     {
       "title": "A/C Off When Away",
-      "description": "Turn off air conditioning when leaving the apartment."
+      "description": "If you are heading out for a while, please turn the A/C off before leaving."
     },
     {
       "title": "Care for Furnishings",
-      "description": "Please treat the home, artwork, and appliances with care."
+      "description": "Please treat the home, the artwork, and the appliances with care, the way you would in a friend's place."
     }
   ],
   "localTips": [
     {
       "title": "Restaurants Nearby",
       "items": [
-        "Meson D'Bari for Dominican comfort food.",
-        "Segafredo for coffee and light breakfast.",
-        "Jalao for a more upscale local dinner."
+        "Meson D'Bari is a good choice if you want Dominican comfort food.",
+        "Segafredo is easy for coffee or a light breakfast.",
+        "Jalao is a nice option if you want something a little more lively for dinner."
       ]
     },
     {
       "title": "Essentials",
       "items": [
-        "Farmacia Carol is nearby for quick pharmacy runs.",
-        "Nacional is the easiest grocery option for guests.",
-        "Uber is the most straightforward ride option."
+        "Farmacia Carol is nearby if you need a quick pharmacy run.",
+        "Nacional is usually the easiest grocery option.",
+        "Uber is generally the simplest way to get around."
       ]
     }
   ],
@@ -176,7 +176,7 @@
     {
       "label": "Host",
       "name": "Casa Karaya Host",
-      "description": "Use this number first for guest questions, arrival support, or anything inside the apartment.",
+      "description": "Reach out here first for anything at all in the apartment, check-in questions, or if something does not feel right.",
       "phone": "+18095550001",
       "phoneLabel": "+1 (809) 555-0001",
       "whatsapp": "https://wa.me/18095550001",
@@ -185,7 +185,7 @@
     {
       "label": "Building",
       "name": "Concierge and Security",
-      "description": "Contact for lobby access, building issues, or after-hours support.",
+      "description": "Use this for lobby access, building-related issues, or after-hours help downstairs.",
       "phone": "+18095550002",
       "phoneLabel": "+1 (809) 555-0002",
       "whatsapp": "",
@@ -194,7 +194,7 @@
     {
       "label": "Emergency",
       "name": "National Emergency Services",
-      "description": "Police, fire, and ambulance.",
+      "description": "For police, fire, or ambulance emergencies.",
       "phone": "911",
       "phoneLabel": "911",
       "whatsapp": "",
