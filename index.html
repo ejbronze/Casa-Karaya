@@ -11,28 +11,39 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <div class="page-loader" id="pageLoader" aria-hidden="true">
+    <div class="page-loader-inner">
+      <div class="loader-rings">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <img src="assets/logo.png" alt="" class="loader-logo" />
+      <p class="loader-word">Casa Karaya</p>
+      <p class="loader-subword">Preparing your guide</p>
+    </div>
+  </div>
 
-  <!-- NAVIGATION -->
   <nav class="nav" id="nav">
     <div class="nav-inner">
       <a href="#hero" class="nav-logo">
         <img src="assets/logo.png" alt="Casa Karaya" class="logo-img" />
         <span class="logo-text">Casa Karaya</span>
       </a>
-      <button class="hamburger" id="hamburger" aria-label="Open menu">
+      <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
       <ul class="nav-links" id="nav-links">
         <li><a href="#quick-access" class="nav-link">Quick Access</a></li>
-        <li><a href="#apartment-guide" class="nav-link">Apartment</a></li>
-        <li><a href="#building" class="nav-link">Building</a></li>
-        <li><a href="#neighborhood" class="nav-link">Neighborhood</a></li>
-        <li><a href="#emergency" class="nav-link emergency-link">Emergency</a></li>
+        <li><a href="#map-teaser" class="nav-link">Map</a></li>
+        <li><a href="#apartment-guide" class="nav-link">Guide</a></li>
+        <li><a href="#house-rules" class="nav-link">Rules</a></li>
+        <li><a href="#contacts" class="nav-link emergency-link">Contacts</a></li>
+        <li><a href="/admin" class="nav-link">Admin</a></li>
       </ul>
     </div>
   </nav>
 
-  <!-- HERO -->
   <section class="hero" id="hero">
     <div class="hero-bg">
       <div class="moon-orb" id="moonOrb"></div>
@@ -44,13 +55,17 @@
       <div class="grid-overlay"></div>
     </div>
     <div class="hero-content">
-      <div class="hero-eyebrow">Evaristo Morales · Santo Domingo</div>
+      <div class="hero-eyebrow" id="heroEyebrow">Evaristo Morales · Santo Domingo</div>
       <div class="hero-logo-wrap">
         <img src="assets/logo.png" alt="Casa Karaya" class="hero-logo" />
       </div>
-      <h1 class="hero-title">Apartment Guide</h1>
-      <p class="hero-sub">Named for the Taíno moon goddess.<br/>Your home, illuminated.</p>
-      <a href="#quick-access" class="btn-primary">Explore the Guide</a>
+      <h1 class="hero-title" id="heroTitle">Apartment Guide</h1>
+      <p class="hero-sub" id="heroSubtitle">Named for the Taíno moon goddess.<br />Your home, illuminated.</p>
+      <div class="hero-actions">
+        <a href="#quick-access" class="btn-primary" id="heroCta">Explore the Guide</a>
+        <button type="button" class="btn-secondary" id="openMapHero">Open Interactive Map</button>
+      </div>
+      <div class="hero-facts" id="heroFacts"></div>
     </div>
     <a href="#quick-access" class="hero-scroll-hint" aria-label="Scroll down to quick access">
       <span class="scroll-mouse" aria-hidden="true">
@@ -63,773 +78,213 @@
     </a>
   </section>
 
-  <!-- QUICK ACCESS -->
   <section class="section quick-access" id="quick-access">
     <div class="container">
       <div class="section-label">Quick Access</div>
       <h2 class="section-title">What do you need?</h2>
-      <div class="quick-grid">
-        <button class="quick-btn" data-target="wifi">
-          <div class="quick-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><circle cx="12" cy="20" r="1" fill="currentColor"/></svg>
-          </div>
-          <span>WiFi</span>
-        </button>
-        <button class="quick-btn" data-target="ac">
-          <div class="quick-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="8" rx="2"/><path d="M7 11v4a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-4"/><path d="M12 15v4"/><path d="M8 19h8"/></svg>
-          </div>
-          <span>A/C</span>
-        </button>
-        <button class="quick-btn" data-target="water">
-          <div class="quick-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10c0-5.5-4.5-10-10-10zm0 0c0 0-4 6-4 10a4 4 0 0 0 8 0c0-4-4-10-4-10z"/></svg>
-          </div>
-          <span>Hot Water</span>
-        </button>
-        <button class="quick-btn" data-target="kitchen">
-          <div class="quick-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="7" rx="1"/><path d="M5 10v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8"/><path d="M9 10v4h6v-4"/></svg>
-          </div>
-          <span>Kitchen</span>
-        </button>
-        <button class="quick-btn" data-target="emergency-section">
-          <div class="quick-icon emergency-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2.8 19a1 1 0 0 0 .87 1.5h16.66A1 1 0 0 0 21.2 19L12 3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
-          </div>
-          <span>Emergency</span>
-        </button>
-        <button class="quick-btn" data-target="house-rules">
-          <div class="quick-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-          </div>
-          <span>House Rules</span>
-        </button>
-        <button class="quick-btn" data-target="neighborhood">
-          <div class="quick-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          </div>
-          <span>Neighborhood</span>
-        </button>
-        <button class="quick-btn" data-target="tv">
-          <div class="quick-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="15" rx="2"/><polyline points="17 2 12 7 7 2"/></svg>
-          </div>
-          <span>TV / Streaming</span>
-        </button>
-      </div>
+      <div class="quick-grid" id="quickGrid"></div>
     </div>
   </section>
 
-  <!-- APARTMENT MAP -->
-  <section class="section map-section" id="map-section">
+  <section class="section map-section" id="map-teaser">
     <div class="container">
       <div class="section-label">Interactive Map</div>
-      <h2 class="section-title">Explore the Apartment</h2>
-      <p class="section-sub">Tap a room to discover its guide.</p>
-      <div class="map-wrapper">
-        <svg class="apartment-map" viewBox="0 0 820 560" xmlns="http://www.w3.org/2000/svg" font-family="Montserrat, sans-serif">
-          <!-- Map backdrop and outer apartment boundary -->
-          <rect x="0" y="0" width="820" height="560" fill="#0A1F33"/>
-          <rect x="30" y="30" width="760" height="500" rx="4" fill="none" stroke="#FFFFFF" stroke-width="1.2" opacity="0.7"/>
-
-          <!-- Structural wall lines and room dividers -->
-          <line x1="180" y1="30" x2="180" y2="315" stroke="#FFFFFF" stroke-width="1" opacity="0.75"/>
-          <line x1="30" y1="115" x2="180" y2="115" stroke="#FFFFFF" stroke-width="1" opacity="0.75"/>
-          <line x1="30" y1="265" x2="180" y2="265" stroke="#FFFFFF" stroke-width="1" opacity="0.75"/>
-          <line x1="180" y1="315" x2="180" y2="530" stroke="#FFFFFF" stroke-width="1" opacity="0.75"/>
-          <line x1="300" y1="30" x2="300" y2="265" stroke="#FFFFFF" stroke-width="1" opacity="0.75"/>  
-          <line x1="490" y1="30" x2="490" y2="265" stroke="#FFFFFF" stroke-width="1" opacity="0.75"/>
-          <!--Guest bathroom & Linen Wall-->
-          <line x1="490" y1="200" x2="570" y2="200" stroke="#FFFFFF" stroke-width="1" opacity="0.75"/>
-          <line x1="490" y1="30" x2="490" y2="265" stroke="#FFFFFF" stroke-width="1" opacity="0.75"/>
-          <line x1="490" y1="180" x2="570" y2="180" stroke="#FFFFFF" stroke-width="1" opacity="0.75"/>
-          <line x1="570" y1="30" x2="570" y2="440" stroke="#FFFFFF" stroke-width="1" opacity="0.75"/>
-          <!--Walk-in closet and bathroom dividing wall-->
-          <line x1="655" y1="265" x2="655" y2="360" stroke="#FFFFFF" stroke-width="1" opacity="0.75"/>
-          <line x1="180" y1="265" x2="490" y2="265" stroke="#FFFFFF" stroke-width="1" opacity="0.75"/>        
-          <line x1="570" y1="265" x2="790" y2="265" stroke="#FFFFFF" stroke-width="1" opacity="0.75"/>
-          <line x1="570" y1="360" x2="790" y2="360" stroke="#FFFFFF" stroke-width="1" opacity="0.75"/>
-          <!--Powder Room and Hallway Wall-->
-          <line x1="570" y1="440" x2="790" y2="440" stroke="#FFFFFF" stroke-width="1" opacity="0.75"/>
-          <line x1="405" y1="215" x2="405" y2="265" stroke="#FFFFFF" stroke-width="1" opacity="0.75"/>
-          <line x1="300" y1="215" x2="405" y2="215" stroke="#FFFFFF" stroke-width="1" opacity="0.75"/>
-          
-          <!--Stove Rendering-->
-          <!--
-          <rect x="276" y="120" width="18" height="54" fill="none" stroke="#FFFFFF" stroke-width="1" opacity="0.75"/>
-          <circle cx="282" cy="134" r="2.6" fill="none" stroke="#FFFFFF" stroke-width="1" opacity="0.75"/>
-          <circle cx="288" cy="134" r="2.6" fill="none" stroke="#FFFFFF" stroke-width="1" opacity="0.75"/>
-          <circle cx="282" cy="152" r="2.6" fill="none" stroke="#FFFFFF" stroke-width="1" opacity="0.75"/>
-          <circle cx="288" cy="152" r="2.6" fill="none" stroke="#FFFFFF" stroke-width="1" opacity="0.75"/>
-        -->
-          <!-- Laundry zone -->
-          <g class="map-zone" data-room="laundry" tabindex="0">
-            <rect id="laundry" class="room-hit" data-room="laundry" data-label="Laundry" x="30" y="30" width="150" height="85" rx="2" fill="transparent" stroke="transparent" stroke-width="1.5"/>
-            <text x="105" y="84" text-anchor="middle" fill="#FFFFFF" font-size="12" font-weight="600">LAUNDRY AREA</text>
-          </g>
-
-          <!-- Office zone -->
-          <g class="map-zone" data-room="office" tabindex="0">
-            <rect id="office" class="room-hit" data-room="office" data-label="Office" x="30" y="115" width="150" height="150" rx="2" fill="transparent" stroke="transparent" stroke-width="1.5"/>
-            <text x="105" y="200" text-anchor="middle" fill="#FFFFFF" font-size="14" font-weight="600">OFFICE</text>
-          </g>
-
-          <!-- Balcony zone -->
-          <g class="map-zone" data-room="balcony" tabindex="0">
-            <rect id="balcony" class="room-hit" data-room="balcony" data-label="Balcony" x="30" y="265" width="150" height="265" rx="2" fill="transparent" stroke="transparent" stroke-width="1.5"/>
-            <text x="105" y="435" text-anchor="middle" fill="#FFFFFF" font-size="13" font-weight="600">BALCONY</text>
-          </g>
-
-          <!-- Kitchen zone -->
-          <g class="map-zone" data-room="kitchen" tabindex="0">
-            <rect id="kitchen" class="room-hit" data-room="kitchen" data-label="Kitchen" x="180" y="30" width="120" height="235" rx="2" fill="transparent" stroke="transparent" stroke-width="1.5"/>
-            <text x="240" y="150" text-anchor="middle" fill="#FFFFFF" font-size="14" font-weight="600">KITCHEN</text>
-          </g>
-
-          <!-- Bedroom #2 zone -->
-          <g class="map-zone" data-room="bedroom2" tabindex="0">
-            <rect id="bedroom2" class="room-hit" data-room="bedroom2" data-label="Bedroom #2" x="300" y="30" width="190" height="232" rx="2" fill="transparent" stroke="transparent" stroke-width="1.5"/>
-            <text x="395" y="145" text-anchor="middle" fill="#FFFFFF" font-size="15" font-weight="600">BEDROOM #2</text>
-          </g>
-
-          <!-- Bathroom #2 zone -->
-          <g class="map-zone" data-room="bathroom2" tabindex="0">
-            <rect id="bathroom2" class="room-hit" data-room="bathroom2" data-label="Bathroom #2" x="490" y="30" width="80" height="150" rx="2" fill="transparent" stroke="transparent" stroke-width="1.5"/>
-            <text x="530" y="118" text-anchor="middle" fill="#FFFFFF" font-size="11" font-weight="600">BATHROOM</text>
-            <text x="530" y="134" text-anchor="middle" fill="#FFFFFF" font-size="11" font-weight="600">#2</text>
-          </g>
-
-          <!-- Bedroom #1 zone -->
-          <g class="map-zone" data-room="bedroom" tabindex="0">
-            <rect id="bedroom" class="room-hit" data-room="bedroom" data-label="Bedroom #1" x="570" y="30" width="220" height="235" rx="2" fill="transparent" stroke="transparent" stroke-width="1.5"/>
-            <text x="680" y="145" text-anchor="middle" fill="#FFFFFF" font-size="15" font-weight="600">BEDROOM #1</text>
-          </g>
-
-          <!-- Living and dining zone -->
-          <g class="map-zone" data-room="living" tabindex="0">
-            <rect id="living" class="room-hit" data-room="living" data-label="Living Room + Dining" x="180" y="265" width="390" height="265" rx="2" fill="transparent" stroke="transparent" stroke-width="1.5"/>
-            <text x="380" y="400" text-anchor="middle" fill="#FFFFFF" font-size="15" font-weight="600">DINING &amp; LIVING ROOM</text>
-            <text x="380" y="457" text-anchor="middle" fill="rgba(255,255,255,0.52)" font-size="9" letter-spacing="0.08em">TAP TO EXPLORE</text>
-          </g>
-
-          <!-- Shared closet-related zones: linen closet, bedroom #2 closet, and walk-in closet -->
-          <g class="map-zone" data-room="closet" tabindex="0">
-            <rect id="closet" class="room-hit" data-room="closet" data-label="Linen Closet" x="490" y="180" width="80" height="20" rx="2" fill="transparent" stroke="transparent" stroke-width="1.5"/>
-            <rect class="room-hit" data-room="closet" data-label="Bedroom #2 Closet" x="300" y="215" width="105" height="50" rx="2" fill="transparent" stroke="transparent" stroke-width="1.5"/>
-            <rect class="room-hit" data-room="closet" data-label="Walk-In Closet" x="570" y="265" width="85" height="95" rx="2" fill="transparent" stroke="transparent" stroke-width="1.5"/>
-            <text x="347" y="240" text-anchor="middle" fill="#FFFFFF" font-size="9" font-weight="600">BEDROOM #2</text>
-            <text x="362.5" y="250" text-anchor="middle" fill="#FFFFFF" font-size="9" font-weight="600">CLOSET</text>
-            <text x="530" y="194" text-anchor="middle" fill="#FFFFFF" font-size="10" font-weight="600">LINEN</text>
-            <text x="612.5" y="318" text-anchor="middle" fill="#FFFFFF" font-size="11" font-weight="600">WALK-IN</text>
-            <text x="612.5" y="330" text-anchor="middle" fill="#FFFFFF" font-size="11" font-weight="600">CLOSET</text>
-          </g>
-
-          <!-- Bathroom #1 zone -->
-          <g class="map-zone" data-room="bathroom" tabindex="0">
-            <rect id="bathroom" class="room-hit" data-room="bathroom" data-label="Bathroom #1" x="655" y="265" width="135" height="95" rx="2" fill="transparent" stroke="transparent" stroke-width="1.5"/>
-            <text x="722" y="324" text-anchor="middle" fill="#FFFFFF" font-size="11" font-weight="600">BATHROOM #1</text>
-          </g>
-
-          <!-- Powder room zone -->
-          <g class="map-zone" data-room="powder" tabindex="0">
-            <rect id="powder" class="room-hit" data-room="powder" data-label="Powder Room" x="570" y="360" width="220" height="80" rx="2" fill="transparent" stroke="transparent" stroke-width="1.5"/>
-            <text x="675" y="402" text-anchor="middle" fill="#FFFFFF" font-size="11" font-weight="600">POWDER ROOM</text>
-          </g>
-
-          <!-- Entry annotation only: label and directional arrow -->
-          <text x="722" y="490" text-anchor="middle" fill="#FFFFFF" font-size="12" font-weight="600">FOYER</text>
-          <line x1="800" y1="490" x2="770" y2="490" stroke="#F2C94C" stroke-width="1.5" opacity="0.9"/>
-          <polygon points="752,490 772,480 772,500" fill="#F2C94C"/>
-
-        </svg>
-
-        <!-- Zone Info Panel -->
-        <div class="zone-panel" id="zonePanel">
-          <div class="zone-panel-inner">
-            <button class="zone-close" id="zoneClose">✕</button>
-            <div class="zone-kicker">Room Guide</div>
-            <div class="zone-header">
-              <div class="zone-icon" id="zoneIcon"></div>
-              <h3 class="zone-title" id="zoneTitle">Room</h3>
-            </div>
-            <div class="zone-content" id="zoneContent"></div>
+      <h2 class="section-title">Explore Casa Karaya</h2>
+      <p class="section-sub">Open the full apartment map, then tap any room to see the right instructions instantly.</p>
+      <div class="map-teaser-card">
+        <div class="map-teaser-copy">
+          <p class="map-kicker">Room-by-room navigation</p>
+          <h3>Exact layout, now with a guided modal experience.</h3>
+          <p>The map loads in its own immersive view so guests can move through the apartment the way they actually experience it.</p>
+          <button type="button" class="btn-primary" id="openMapTeaser">Launch the Interactive Map</button>
+        </div>
+        <div class="map-preview-shell">
+          <div class="map-preview-grid"></div>
+          <div class="map-preview-card">
+            <span>Living Room</span>
+            <span>Kitchen</span>
+            <span>Bedrooms</span>
+            <span>Bathrooms</span>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- APARTMENT GUIDE -->
   <section class="section apartment-guide" id="apartment-guide">
     <div class="container">
       <div class="section-label">How-To Guide</div>
       <h2 class="section-title">Apartment Guide</h2>
-      <div class="accordion-grid">
-
-        <div class="accordion-item" id="wifi">
-          <button class="accordion-header">
-            <div class="accordion-icon-wrap">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><circle cx="12" cy="20" r="1" fill="currentColor"/></svg>
-            </div>
-            <span>WiFi & Internet</span>
-            <div class="accordion-arrow">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-            </div>
-          </button>
-          <div class="accordion-body">
-            <div class="info-card highlight-card">
-              <div class="info-row">
-                <span class="info-label">Network</span>
-                <span class="info-value copy-text" data-copy="Apt903">Apt903</span>
-              </div>
-              <div class="info-row">
-                <span class="info-label">Password</span>
-                <span class="info-value copy-text" data-copy="Britney10!">Britney10!</span>
-              </div>
-            </div>
-            <p class="guide-note">Router is in the dining room area behind the jalousie windows. If the connection drops, unplug the router for 30 seconds, then plug it back in. For NFC/RFID-enabled devices, tap the lower-right corner of the living room painting to connect quickly.</p>
-            <div class="tip-box">
-              <strong>💡 Tip:</strong> Tap the network name or password to copy it to your clipboard.
-            </div>
-          </div>
-        </div>
-
-        <div class="accordion-item" id="ac">
-          <button class="accordion-header">
-            <div class="accordion-icon-wrap">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="8" rx="2"/><path d="M7 11v4a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-4"/><path d="M12 15v4"/><path d="M8 19h8"/></svg>
-            </div>
-            <span>Air Conditioning</span>
-            <div class="accordion-arrow">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-            </div>
-          </button>
-          <div class="accordion-body">
-            <ol class="guide-steps">
-              <li>Use the remote on the bedside table to control the A/C unit.</li>
-              <li>Press the <strong>Power button</strong> to turn on/off.</li>
-              <li>Recommended temperature: <strong>23–25°C</strong> for comfort.</li>
-              <li>Use <strong>AUTO</strong> mode for energy efficiency.</li>
-              <li>Aim vents upward to avoid direct cold air drafts.</li>
-            </ol>
-            <div class="tip-box warning">
-              <strong>⚠ Please note:</strong> Always turn off A/C when leaving the apartment. This saves energy and keeps your bill manageable.
-            </div>
-          </div>
-        </div>
-
-        <div class="accordion-item" id="water">
-          <button class="accordion-header">
-            <div class="accordion-icon-wrap">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10c0-5.5-4.5-10-10-10zm0 0c0 0-4 6-4 10a4 4 0 0 0 8 0c0-4-4-10-4-10z"/></svg>
-            </div>
-            <span>Hot Water Heater</span>
-            <div class="accordion-arrow">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-            </div>
-          </button>
-          <div class="accordion-body">
-            <ol class="guide-steps">
-              <li>The water heater is located in the bathroom utility closet.</li>
-              <li>Ensure the <strong>electric switch</strong> on the wall panel is ON (flip up).</li>
-              <li>Wait <strong>10–15 minutes</strong> for water to heat after switching on.</li>
-              <li>Adjust temperature on the unit dial — middle setting is ideal.</li>
-              <li>Turn off when leaving for extended periods.</li>
-            </ol>
-          </div>
-        </div>
-
-        <div class="accordion-item" id="kitchen">
-          <button class="accordion-header">
-            <div class="accordion-icon-wrap">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="7" rx="1"/><path d="M5 10v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8"/><path d="M9 10v4h6v-4"/></svg>
-            </div>
-            <span>Kitchen Appliances</span>
-            <div class="accordion-arrow">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-            </div>
-          </button>
-          <div class="accordion-body">
-            <div class="appliance-list">
-              <div class="appliance-row">
-                <strong>Refrigerator</strong>
-                <p>Set to 37°F (3°C) for fridge, 0°F (-18°C) for freezer. Do not leave door open.</p>
-              </div>
-              <div class="appliance-row">
-                <strong>Microwave</strong>
-                <p>Standard operation. Do not use metal containers. Clean after use.</p>
-              </div>
-              <div class="appliance-row">
-                <strong>Electric Stove</strong>
-                <p>Knobs control burner heat. Always ensure burners are OFF after cooking. Wipe surface when cool.</p>
-              </div>
-              <div class="appliance-row">
-                <strong>Coffee Maker</strong>
-                <p>Pods are provided in the top cabinet. Press the button for your cup size. Clean basket after use.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="accordion-item" id="laundry">
-          <button class="accordion-header">
-            <div class="accordion-icon-wrap">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><path d="M4.93 4.93l4.24 4.24"/></svg>
-            </div>
-            <span>Laundry</span>
-            <div class="accordion-arrow">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-            </div>
-          </button>
-          <div class="accordion-body">
-            <ol class="guide-steps">
-              <li>Washer/dryer is in the utility closet near the bathroom.</li>
-              <li>Load clothes, add detergent to the drawer (not inside the drum).</li>
-              <li>Select your cycle — <strong>Normal</strong> for most items.</li>
-              <li>Cold water cycle recommended for most fabrics.</li>
-              <li>Detergent pods are provided in the cabinet above.</li>
-              <li>Leave washer door ajar after use to prevent moisture buildup.</li>
-            </ol>
-          </div>
-        </div>
-
-        <div class="accordion-item" id="electric">
-          <button class="accordion-header">
-            <div class="accordion-icon-wrap">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-            </div>
-            <span>Electric Panel</span>
-            <div class="accordion-arrow">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-            </div>
-          </button>
-          <div class="accordion-body">
-            <p class="guide-note">The breaker panel is located in the entrance hallway, behind the white cabinet door.</p>
-            <div class="appliance-list">
-              <div class="appliance-row">
-                <strong>Main Breaker (top switch)</strong>
-                <p>Controls all power. Only switch off in an electrical emergency.</p>
-              </div>
-              <div class="appliance-row">
-                <strong>A/C Circuit</strong>
-                <p>Labeled "AIRE." If A/C loses power, check this breaker first.</p>
-              </div>
-              <div class="appliance-row">
-                <strong>Kitchen Circuit</strong>
-                <p>Labeled "COCINA." Reset if kitchen outlets stop working.</p>
-              </div>
-            </div>
-            <div class="tip-box warning">
-              <strong>⚠ Important:</strong> If a breaker trips, turn it fully OFF before switching back ON.
-            </div>
-          </div>
-        </div>
-
-        <div class="accordion-item" id="tv">
-          <button class="accordion-header">
-            <div class="accordion-icon-wrap">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="15" rx="2"/><polyline points="17 2 12 7 7 2"/></svg>
-            </div>
-            <span>TV & Entertainment</span>
-            <div class="accordion-arrow">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-            </div>
-          </button>
-          <div class="accordion-body">
-            <div class="appliance-list">
-              <div class="appliance-row">
-                <strong>Smart TV</strong>
-                <p>Press the home button on the Samsung remote. Use your own streaming accounts or the pre-installed apps.</p>
-              </div>
-              <div class="appliance-row">
-                <strong>Netflix / Disney+ / HBO Max</strong>
-                <p>Available on the TV. Please log out of your personal account before checkout.</p>
-              </div>
-              <div class="appliance-row">
-                <strong>Bluetooth Speaker</strong>
-                <p>Located on the shelf. Search "KarayaSound" on Bluetooth to connect.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
+      <p class="section-sub" id="guideIntro">Everything guests usually ask first, plus the home rules and local notes that make the stay smoother.</p>
+      <div class="accordion-grid" id="guideAccordions"></div>
     </div>
   </section>
 
-  <!-- BUILDING INFORMATION -->
-  <section class="section building-section" id="building">
-    <div class="container">
-      <div class="section-label">Building Info</div>
-      <h2 class="section-title">Building & Amenities</h2>
-      <div class="building-grid">
-        <div class="building-card">
-          <div class="building-card-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="1"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          </div>
-          <h3>Elevator Access</h3>
-          <p>The elevator is located to the right of the main lobby. Your key fob grants access to floor 4. Press your floor and wait — elevator takes approx. 30 seconds. Stairs available through the left door in case of emergency.</p>
-        </div>
-        <div class="building-card">
-          <div class="building-card-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v3"/><rect x="9" y="11" width="14" height="10" rx="1"/><circle cx="12" cy="16" r="1" fill="currentColor"/></svg>
-          </div>
-          <h3>Parking</h3>
-          <p>One assigned parking spot is included — Space <strong>#12</strong> in the underground garage. Access via the ramp on Calle Evaristo Morales. Use the same key fob for the parking gate. Visitor parking is available on the street.</p>
-        </div>
-        <div class="building-card">
-          <div class="building-card-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
-          </div>
-          <h3>Trash Disposal</h3>
-          <p>Trash chute is on every floor near the elevator. Regular trash goes in the black bins. Recyclables in the blue bins on the ground floor. Bulk items: contact building admin. Collection is Monday, Wednesday, and Friday.</p>
-        </div>
-        <div class="building-card">
-          <div class="building-card-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41a2 2 0 0 1 1.99-2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6.18 6.18l1.76-1.76a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-          </div>
-          <h3>Building Admin</h3>
-          <p>The building concierge is available Monday to Saturday, 8am–8pm, in the lobby. For after-hours emergencies, call the building's 24/7 security line. They can assist with lost keys, package delivery, and noise complaints.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- HOUSE RULES -->
   <section class="section rules-section" id="house-rules">
     <div class="container">
-      <div class="section-label">Guidelines</div>
-      <h2 class="section-title">House Rules</h2>
-      <p class="section-sub">We trust our guests. These simple guidelines help preserve the experience for everyone.</p>
-      <div class="rules-grid">
-        <div class="rule-item">
-          <div class="rule-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-          </div>
-          <div class="rule-text">
-            <strong>No Smoking</strong>
-            <span>Smoke-free property including balcony. Violation incurs deep-cleaning fee.</span>
-          </div>
-        </div>
-        <div class="rule-item">
-          <div class="rule-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3z"/><path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>
-          </div>
-          <div class="rule-text">
-            <strong>Respect Neighbors</strong>
-            <span>Quiet hours: 10pm–8am. Keep music at conversational volume indoors.</span>
-          </div>
-        </div>
-        <div class="rule-item">
-          <div class="rule-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="8" rx="2"/><path d="M7 11v4a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-4"/></svg>
-          </div>
-          <div class="rule-text">
-            <strong>A/C Off When Away</strong>
-            <span>Please switch off A/C whenever leaving the apartment for your comfort and to conserve energy.</span>
-          </div>
-        </div>
-        <div class="rule-item">
-          <div class="rule-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-          </div>
-          <div class="rule-text">
-            <strong>Care for Furnishings</strong>
-            <span>Treat furniture, artwork, and appliances as your own. Report any damage immediately.</span>
-          </div>
-        </div>
-        <div class="rule-item">
-          <div class="rule-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          </div>
-          <div class="rule-text">
-            <strong>Guests & Visitors</strong>
-            <span>Maximum overnight guests as per booking. Day visitors welcome but must leave by 10pm.</span>
-          </div>
-        </div>
-        <div class="rule-item">
-          <div class="rule-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-          </div>
-          <div class="rule-text">
-            <strong>Check-Out Protocol</strong>
-            <span>Check-out by 11am. Dishes washed, trash bagged, keys left on the kitchen counter.</span>
-          </div>
-        </div>
-      </div>
+      <div class="section-label light">Guidelines</div>
+      <h2 class="section-title light">House Rules</h2>
+      <p class="section-sub light">We trust our guests. These simple guidelines help preserve the experience for everyone.</p>
+      <div class="rules-grid" id="rulesGrid"></div>
     </div>
   </section>
 
-  <!-- NEIGHBORHOOD -->
-  <section class="section neighborhood-section" id="neighborhood">
+  <section class="section neighborhood-section" id="local-guide">
     <div class="container">
       <div class="section-label">Local Guide</div>
-      <h2 class="section-title">Neighborhood</h2>
-      <p class="section-sub">Evaristo Morales — one of Santo Domingo's most vibrant districts.</p>
-      <div class="accordion-grid">
-
-        <div class="accordion-item">
-          <button class="accordion-header">
-            <div class="accordion-icon-wrap">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
-            </div>
-            <span>Restaurants & Cafés</span>
-            <div class="accordion-arrow">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-            </div>
-          </button>
-          <div class="accordion-body">
-            <div class="place-list">
-              <div class="place-row">
-                <div class="place-info">
-                  <strong>Meson D'Bari</strong>
-                  <span class="place-type">Dominican · 5 min walk</span>
-                </div>
-                <span class="place-badge">Local Fave</span>
-              </div>
-              <div class="place-row">
-                <div class="place-info">
-                  <strong>Segafredo</strong>
-                  <span class="place-type">Italian Café · 3 min walk</span>
-                </div>
-                <span class="place-badge">Coffee</span>
-              </div>
-              <div class="place-row">
-                <div class="place-info">
-                  <strong>Jalao</strong>
-                  <span class="place-type">Upscale Dominican · 8 min drive</span>
-                </div>
-                <span class="place-badge">Dinner</span>
-              </div>
-              <div class="place-row">
-                <div class="place-info">
-                  <strong>Adrian Tropical</strong>
-                  <span class="place-type">Malecón · Seafood · 10 min drive</span>
-                </div>
-                <span class="place-badge">Scenic</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="accordion-item">
-          <button class="accordion-header">
-            <div class="accordion-icon-wrap">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-            </div>
-            <span>Groceries & Markets</span>
-            <div class="accordion-arrow">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-            </div>
-          </button>
-          <div class="accordion-body">
-            <div class="place-list">
-              <div class="place-row">
-                <div class="place-info">
-                  <strong>Nacional Supermarket</strong>
-                  <span class="place-type">Full supermarket · 5 min walk</span>
-                </div>
-              </div>
-              <div class="place-row">
-                <div class="place-info">
-                  <strong>Jumbo (Bella Vista)</strong>
-                  <span class="place-type">Large supermarket · 10 min drive</span>
-                </div>
-              </div>
-              <div class="place-row">
-                <div class="place-info">
-                  <strong>Mercado Modelo</strong>
-                  <span class="place-type">Local market · 12 min drive</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="accordion-item">
-          <button class="accordion-header">
-            <div class="accordion-icon-wrap">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>
-            </div>
-            <span>Pharmacies & Health</span>
-            <div class="accordion-arrow">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-            </div>
-          </button>
-          <div class="accordion-body">
-            <div class="place-list">
-              <div class="place-row">
-                <div class="place-info">
-                  <strong>Farmacia Carol</strong>
-                  <span class="place-type">2 min walk · Open 24hrs</span>
-                </div>
-                <span class="place-badge">24H</span>
-              </div>
-              <div class="place-row">
-                <div class="place-info">
-                  <strong>Clínica Corominas</strong>
-                  <span class="place-type">Private clinic · 5 min drive</span>
-                </div>
-              </div>
-              <div class="place-row">
-                <div class="place-info">
-                  <strong>Centro Médico UCE</strong>
-                  <span class="place-type">Full hospital · 10 min drive</span>
-                </div>
-                <span class="place-badge">Hospital</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="accordion-item">
-          <button class="accordion-header">
-            <div class="accordion-icon-wrap">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13" rx="1"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-            </div>
-            <span>Transportation</span>
-            <div class="accordion-arrow">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-            </div>
-          </button>
-          <div class="accordion-body">
-            <div class="appliance-list">
-              <div class="appliance-row">
-                <strong>Uber / InDriver</strong>
-                <p>Both apps work well in Santo Domingo. InDriver is often cheaper for longer rides.</p>
-              </div>
-              <div class="appliance-row">
-                <strong>Taxi Stand</strong>
-                <p>There's a reliable taxi stand 1 block east on Calle Roberto Pastoriza.</p>
-              </div>
-              <div class="appliance-row">
-                <strong>Las Américas Airport</strong>
-                <p>Approx. 35–45 min drive. Take the 30 de Mayo highway. Uber recommended.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
+      <h2 class="section-title">Helpful Extras</h2>
+      <p class="section-sub">A few useful local notes and essentials, ready to update whenever your recommendations change.</p>
+      <div class="tips-grid" id="tipsGrid"></div>
     </div>
   </section>
 
-  <!-- APARTMENT FEATURES -->
-  <section class="section features-section" id="features">
-    <div class="container">
-      <div class="section-label">The Space</div>
-      <h2 class="section-title">Apartment Features</h2>
-      <div class="features-mosaic">
-        <div class="feature-tile large">
-          <div class="feature-tile-inner">
-            <div class="feature-number">01</div>
-            <h3>Contemporary Design</h3>
-            <p>Curated interiors with clean lines, natural materials, and locally inspired artwork throughout the space.</p>
-          </div>
-        </div>
-        <div class="feature-tile">
-          <div class="feature-tile-inner">
-            <div class="feature-number">02</div>
-            <h3>Private Balcony</h3>
-            <p>Your own outdoor retreat with city views and evening breeze.</p>
-          </div>
-        </div>
-        <div class="feature-tile">
-          <div class="feature-tile-inner">
-            <div class="feature-number">03</div>
-            <h3>Premium Bedding</h3>
-            <p>Hotel-quality linens, blackout curtains, and a plush mattress for a restful night.</p>
-          </div>
-        </div>
-        <div class="feature-tile wide">
-          <div class="feature-tile-inner">
-            <div class="feature-number">04</div>
-            <h3>Smart Entertainment</h3>
-            <p>65" Smart TV with streaming apps, premium Bluetooth speaker, and high-speed fiber WiFi throughout.</p>
-          </div>
-        </div>
-        <div class="feature-tile">
-          <div class="feature-tile-inner">
-            <div class="feature-number">05</div>
-            <h3>Fully Equipped Kitchen</h3>
-            <p>Everything you need to cook, including premium coffee station and essentials.</p>
-          </div>
-        </div>
-        <div class="feature-tile">
-          <div class="feature-tile-inner">
-            <div class="feature-number">06</div>
-            <h3>Local Artworks</h3>
-            <p>Original pieces by Dominican artists, each with a story of the island.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- EMERGENCY -->
-  <section class="section emergency-section" id="emergency-section">
+  <section class="section emergency-section" id="contacts">
     <div class="container">
       <div class="emergency-header">
         <div class="emergency-pulse"></div>
         <div class="section-label light">Emergency & Contacts</div>
         <h2 class="section-title light">Need Help?</h2>
-        <p class="section-sub light">Save these numbers. We're always reachable.</p>
+        <p class="section-sub light">Keep these close. The right person should always be one tap away.</p>
       </div>
-      <div class="emergency-grid">
-        <div class="emergency-card primary-contact">
-          <div class="emergency-card-label">Owner / Host</div>
-          <div class="emergency-card-name">Casa Karaya Host</div>
-          <a href="tel:+18095550001" class="emergency-call-btn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41a2 2 0 0 1 1.99-2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6.18 6.18l1.76-1.76a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-            +1 (809) 555-0001
-          </a>
-          <a href="https://wa.me/18095550001" class="emergency-whatsapp-btn" target="_blank">
-            WhatsApp
-          </a>
-        </div>
-        <div class="emergency-card">
-          <div class="emergency-card-label">Building Administration</div>
-          <div class="emergency-card-name">Concierge & Security</div>
-          <a href="tel:+18095550002" class="emergency-call-btn secondary">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41a2 2 0 0 1 1.99-2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6.18 6.18l1.76-1.76a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-            +1 (809) 555-0002
-          </a>
-        </div>
-          <div class="emergency-card">
-            <div class="emergency-card-label">National Emergency</div>
-            <div class="emergency-card-name">Police / Fire / Ambulance</div>
-            <a href="tel:911" class="emergency-call-btn alert">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2.8 19a1 1 0 0 0 .87 1.5h16.66A1 1 0 0 0 21.2 19L12 3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
-              911
-            </a>
-          </div>
-      </div>
+      <div class="emergency-grid" id="contactsGrid"></div>
     </div>
   </section>
 
-  <!-- FOOTER -->
   <footer class="footer">
     <div class="container">
       <div class="footer-inner">
         <div class="footer-brand">
           <img src="assets/logo.png" alt="Casa Karaya" class="footer-logo" />
-          <span class="footer-logo-text">Casa Karaya</span>
-          <p>Evaristo Morales · Santo Domingo<br/>Dominican Republic</p>
+          <span class="footer-logo-text" id="footerName">Casa Karaya</span>
+          <p id="footerLocation">Evaristo Morales · Santo Domingo<br />Dominican Republic</p>
         </div>
         <div class="footer-moon">
           <div class="footer-moon-circle"></div>
         </div>
         <div class="footer-note">
-          <p>Named for Karaya, the Taíno goddess of the moon.<br/>May your stay be luminous.</p>
-          <span class="footer-copy">© Casa Karaya · All rights reserved</span>
+          <p id="footerNote">Named for Karaya, the Taíno goddess of the moon.<br />May your stay be luminous.</p>
+          <span class="footer-copy">Live editable guide</span>
         </div>
       </div>
     </div>
   </footer>
 
-  <!-- Zone data overlay for mobile -->
   <div class="overlay" id="overlay"></div>
+
+  <div class="map-modal" id="mapModal" aria-hidden="true">
+    <div class="map-modal-backdrop" data-close-map></div>
+    <div class="map-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="mapModalTitle">
+      <button class="map-modal-close" id="mapModalClose" aria-label="Close interactive map">✕</button>
+      <div class="map-modal-head">
+        <div>
+          <div class="section-label light">Interactive Map</div>
+          <h2 class="map-modal-title" id="mapModalTitle">Explore the Apartment</h2>
+          <p class="map-modal-sub">Tap a room to discover its guide.</p>
+        </div>
+      </div>
+
+      <div class="map-loader active" id="mapLoader" aria-hidden="true">
+        <div class="map-loader-core">
+          <img src="assets/logo.png" alt="" class="map-loader-logo" />
+          <div class="map-loader-ripple"></div>
+          <p>Rendering the interactive floor plan</p>
+        </div>
+      </div>
+
+      <div class="map-modal-content" id="mapModalContent">
+        <div class="map-wrapper modal-map-wrapper">
+          <svg class="apartment-map" viewBox="0 0 820 560" xmlns="http://www.w3.org/2000/svg" font-family="Montserrat, sans-serif">
+            <rect x="0" y="0" width="820" height="560" fill="#0A1F33"/>
+            <rect x="30" y="30" width="760" height="500" rx="4" fill="none" stroke="#FFFFFF" stroke-width="1.2" opacity="0.7"/>
+            <line x1="180" y1="30" x2="180" y2="315" stroke="#FFFFFF" stroke-width="1" opacity="0.75"/>
+            <line x1="30" y1="115" x2="180" y2="115" stroke="#FFFFFF" stroke-width="1" opacity="0.75"/>
+            <line x1="30" y1="265" x2="180" y2="265" stroke="#FFFFFF" stroke-width="1" opacity="0.75"/>
+            <line x1="180" y1="315" x2="180" y2="530" stroke="#FFFFFF" stroke-width="1" opacity="0.75"/>
+            <line x1="300" y1="30" x2="300" y2="265" stroke="#FFFFFF" stroke-width="1" opacity="0.75"/>
+            <line x1="490" y1="30" x2="490" y2="265" stroke="#FFFFFF" stroke-width="1" opacity="0.75"/>
+            <line x1="490" y1="200" x2="570" y2="200" stroke="#FFFFFF" stroke-width="1" opacity="0.75"/>
+            <line x1="490" y1="180" x2="570" y2="180" stroke="#FFFFFF" stroke-width="1" opacity="0.75"/>
+            <line x1="570" y1="30" x2="570" y2="440" stroke="#FFFFFF" stroke-width="1" opacity="0.75"/>
+            <line x1="655" y1="265" x2="655" y2="360" stroke="#FFFFFF" stroke-width="1" opacity="0.75"/>
+            <line x1="180" y1="265" x2="490" y2="265" stroke="#FFFFFF" stroke-width="1" opacity="0.75"/>
+            <line x1="570" y1="265" x2="790" y2="265" stroke="#FFFFFF" stroke-width="1" opacity="0.75"/>
+            <line x1="570" y1="360" x2="790" y2="360" stroke="#FFFFFF" stroke-width="1" opacity="0.75"/>
+            <line x1="570" y1="440" x2="790" y2="440" stroke="#FFFFFF" stroke-width="1" opacity="0.75"/>
+            <line x1="405" y1="215" x2="405" y2="265" stroke="#FFFFFF" stroke-width="1" opacity="0.75"/>
+            <line x1="300" y1="215" x2="405" y2="215" stroke="#FFFFFF" stroke-width="1" opacity="0.75"/>
+
+            <g class="map-zone" data-room="laundry" tabindex="0">
+              <rect id="laundry" class="room-hit" data-room="laundry" data-label="Laundry" x="30" y="30" width="150" height="85" rx="2" fill="transparent" stroke="transparent" stroke-width="1.5"/>
+              <text x="105" y="84" text-anchor="middle" fill="#FFFFFF" font-size="12" font-weight="600">LAUNDRY AREA</text>
+            </g>
+            <g class="map-zone" data-room="office" tabindex="0">
+              <rect id="office" class="room-hit" data-room="office" data-label="Office" x="30" y="115" width="150" height="150" rx="2" fill="transparent" stroke="transparent" stroke-width="1.5"/>
+              <text x="105" y="200" text-anchor="middle" fill="#FFFFFF" font-size="14" font-weight="600">OFFICE</text>
+            </g>
+            <g class="map-zone" data-room="balcony" tabindex="0">
+              <rect id="balcony" class="room-hit" data-room="balcony" data-label="Balcony" x="30" y="265" width="150" height="265" rx="2" fill="transparent" stroke="transparent" stroke-width="1.5"/>
+              <text x="105" y="435" text-anchor="middle" fill="#FFFFFF" font-size="13" font-weight="600">BALCONY</text>
+            </g>
+            <g class="map-zone" data-room="kitchen" tabindex="0">
+              <rect id="kitchen" class="room-hit" data-room="kitchen" data-label="Kitchen" x="180" y="30" width="120" height="235" rx="2" fill="transparent" stroke="transparent" stroke-width="1.5"/>
+              <text x="240" y="150" text-anchor="middle" fill="#FFFFFF" font-size="14" font-weight="600">KITCHEN</text>
+            </g>
+            <g class="map-zone" data-room="bedroom2" tabindex="0">
+              <rect id="bedroom2" class="room-hit" data-room="bedroom2" data-label="Bedroom #2" x="300" y="30" width="190" height="232" rx="2" fill="transparent" stroke="transparent" stroke-width="1.5"/>
+              <text x="395" y="145" text-anchor="middle" fill="#FFFFFF" font-size="15" font-weight="600">BEDROOM #2</text>
+            </g>
+            <g class="map-zone" data-room="bathroom2" tabindex="0">
+              <rect id="bathroom2" class="room-hit" data-room="bathroom2" data-label="Bathroom #2" x="490" y="30" width="80" height="150" rx="2" fill="transparent" stroke="transparent" stroke-width="1.5"/>
+              <text x="530" y="118" text-anchor="middle" fill="#FFFFFF" font-size="11" font-weight="600">BATHROOM</text>
+              <text x="530" y="134" text-anchor="middle" fill="#FFFFFF" font-size="11" font-weight="600">#2</text>
+            </g>
+            <g class="map-zone" data-room="bedroom" tabindex="0">
+              <rect id="bedroom" class="room-hit" data-room="bedroom" data-label="Bedroom #1" x="570" y="30" width="220" height="235" rx="2" fill="transparent" stroke="transparent" stroke-width="1.5"/>
+              <text x="680" y="145" text-anchor="middle" fill="#FFFFFF" font-size="15" font-weight="600">BEDROOM #1</text>
+            </g>
+            <g class="map-zone" data-room="living" tabindex="0">
+              <rect id="living" class="room-hit" data-room="living" data-label="Living Room + Dining" x="180" y="265" width="390" height="265" rx="2" fill="transparent" stroke="transparent" stroke-width="1.5"/>
+              <text x="380" y="400" text-anchor="middle" fill="#FFFFFF" font-size="15" font-weight="600">DINING &amp; LIVING ROOM</text>
+              <text x="380" y="457" text-anchor="middle" fill="rgba(255,255,255,0.52)" font-size="9" letter-spacing="0.08em">TAP TO EXPLORE</text>
+            </g>
+            <g class="map-zone" data-room="closet" tabindex="0">
+              <rect id="closet" class="room-hit" data-room="closet" data-label="Linen Closet" x="490" y="180" width="80" height="20" rx="2" fill="transparent" stroke="transparent" stroke-width="1.5"/>
+              <rect class="room-hit" data-room="closet" data-label="Bedroom #2 Closet" x="300" y="215" width="105" height="50" rx="2" fill="transparent" stroke="transparent" stroke-width="1.5"/>
+              <rect class="room-hit" data-room="closet" data-label="Walk-In Closet" x="570" y="265" width="85" height="95" rx="2" fill="transparent" stroke="transparent" stroke-width="1.5"/>
+              <text x="347" y="240" text-anchor="middle" fill="#FFFFFF" font-size="9" font-weight="600">BEDROOM #2</text>
+              <text x="362.5" y="250" text-anchor="middle" fill="#FFFFFF" font-size="9" font-weight="600">CLOSET</text>
+              <text x="530" y="194" text-anchor="middle" fill="#FFFFFF" font-size="10" font-weight="600">LINEN</text>
+              <text x="612.5" y="318" text-anchor="middle" fill="#FFFFFF" font-size="11" font-weight="600">WALK-IN</text>
+              <text x="612.5" y="330" text-anchor="middle" fill="#FFFFFF" font-size="11" font-weight="600">CLOSET</text>
+            </g>
+            <g class="map-zone" data-room="bathroom" tabindex="0">
+              <rect id="bathroom" class="room-hit" data-room="bathroom" data-label="Bathroom #1" x="655" y="265" width="135" height="95" rx="2" fill="transparent" stroke="transparent" stroke-width="1.5"/>
+              <text x="722" y="324" text-anchor="middle" fill="#FFFFFF" font-size="11" font-weight="600">BATHROOM #1</text>
+            </g>
+            <g class="map-zone" data-room="powder" tabindex="0">
+              <rect id="powder" class="room-hit" data-room="powder" data-label="Powder Room" x="570" y="360" width="220" height="80" rx="2" fill="transparent" stroke="transparent" stroke-width="1.5"/>
+              <text x="675" y="402" text-anchor="middle" fill="#FFFFFF" font-size="11" font-weight="600">POWDER ROOM</text>
+            </g>
+            <text x="722" y="490" text-anchor="middle" fill="#FFFFFF" font-size="12" font-weight="600">FOYER</text>
+            <line x1="800" y1="490" x2="770" y2="490" stroke="#F2C94C" stroke-width="1.5" opacity="0.9"/>
+            <polygon points="752,490 772,480 772,500" fill="#F2C94C"/>
+          </svg>
+
+          <div class="zone-panel" id="zonePanel">
+            <div class="zone-panel-inner">
+              <button class="zone-close" id="zoneClose">✕</button>
+              <div class="zone-kicker">Room Guide</div>
+              <div class="zone-header">
+                <div class="zone-icon" id="zoneIcon"></div>
+                <h3 class="zone-title" id="zoneTitle">Room</h3>
+              </div>
+              <div class="zone-content" id="zoneContent"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>

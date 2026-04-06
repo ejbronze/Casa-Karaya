@@ -1,0 +1,204 @@
+{
+  "site": {
+    "name": "Casa Karaya",
+    "location": "Evaristo Morales, Santo Domingo",
+    "heroEyebrow": "Guest Welcome Guide",
+    "heroTitle": "Welcome to Casa Karaya",
+    "heroSubtitle": "A calm, polished home base for your stay. Everything you need is here, from room notes to appliance instructions.",
+    "ctaLabel": "Explore the Guide",
+    "heroNote": "Named for the Taíno moon goddess. Your home, illuminated.",
+    "footerNote": "Keep this guide updated as the home changes so each guest gets the right information."
+  },
+  "quickFacts": [
+    {
+      "label": "WiFi",
+      "value": "Apt903",
+      "detail": "Password: Britney10!"
+    },
+    {
+      "label": "Check-in",
+      "value": "3:00 PM",
+      "detail": "Self check-in with keypad or host instructions."
+    },
+    {
+      "label": "Check-out",
+      "value": "11:00 AM",
+      "detail": "Please leave keys on the kitchen counter before departure."
+    },
+    {
+      "label": "Parking",
+      "value": "Space #12",
+      "detail": "Use the garage gate fob if assigned."
+    },
+    {
+      "label": "Host",
+      "value": "+1 (809) 555-0001",
+      "detail": "Best for urgent guest questions."
+    }
+  ],
+  "areas": [
+    {
+      "name": "Living Room",
+      "summary": "The main place to relax, gather, and unwind.",
+      "instructions": [
+        "The TV remote is on the media console.",
+        "Please keep balcony doors closed while the A/C is running.",
+        "Extra throw blankets are stored in the sideboard.",
+        "The dimmer switch controls the main room lighting."
+      ]
+    },
+    {
+      "name": "Primary Bedroom",
+      "summary": "Quiet retreat with blackout curtains and bedside charging.",
+      "instructions": [
+        "A/C remote is on the right-hand nightstand.",
+        "Use the curtain pull gently to avoid tangling.",
+        "Extra pillows and blankets are in the closet.",
+        "Please do not place luggage on the bedding."
+      ]
+    },
+    {
+      "name": "Guest Bedroom",
+      "summary": "Comfortable overflow sleeping space for extra guests.",
+      "instructions": [
+        "Closet hangers are available for short stays.",
+        "Fresh towels are placed on the bed before arrival.",
+        "Let the host know if an extra set of linens is needed."
+      ]
+    },
+    {
+      "name": "Kitchen",
+      "summary": "Stocked for simple meals, coffee, and everyday use.",
+      "instructions": [
+        "Salt, pepper, oil, and basic seasonings are in the upper cabinet.",
+        "Trash is under the sink and recycling is in the blue bin.",
+        "Please wipe counters and stovetop after cooking.",
+        "Filtered water pitcher is kept in the refrigerator."
+      ]
+    },
+    {
+      "name": "Balcony",
+      "summary": "Outdoor sitting area with open city views.",
+      "instructions": [
+        "Do not leave cushions outside during heavy rain.",
+        "No smoking on the balcony.",
+        "Please avoid placing items on the railing."
+      ]
+    }
+  ],
+  "appliances": [
+    {
+      "name": "Air Conditioning",
+      "summary": "Use the remote to adjust room temperature and mode.",
+      "instructions": [
+        "Press Power to turn the unit on or off.",
+        "Recommended setting is 23 to 25 C for comfort.",
+        "Please turn the unit off when leaving for long periods.",
+        "Keep windows and balcony doors closed while cooling."
+      ]
+    },
+    {
+      "name": "Water Heater",
+      "summary": "Turn on before showers if hot water is needed.",
+      "instructions": [
+        "Switch the heater on at the panel before use.",
+        "Wait 10 to 15 minutes for hot water.",
+        "Turn the heater off again after use to save energy."
+      ]
+    },
+    {
+      "name": "Washer and Dryer",
+      "summary": "Laundry setup for small guest loads.",
+      "instructions": [
+        "Use one detergent pod per load.",
+        "Cold water is best for most fabrics.",
+        "Clean the dryer lint trap before each cycle.",
+        "Leave the washer door slightly open after use."
+      ]
+    },
+    {
+      "name": "Coffee Machine",
+      "summary": "Single-serve machine with pods stored nearby.",
+      "instructions": [
+        "Fill the rear reservoir with fresh water.",
+        "Insert a pod and press the desired cup size.",
+        "Discard used pods after brewing.",
+        "Extra pods are in the cabinet above the machine."
+      ]
+    },
+    {
+      "name": "Smart TV",
+      "summary": "Streaming-ready television in the living room.",
+      "instructions": [
+        "Use the Home button on the Samsung remote.",
+        "Guests may log into personal streaming accounts if needed.",
+        "Please log out of personal accounts before checkout."
+      ]
+    }
+  ],
+  "houseRules": [
+    {
+      "title": "No Smoking",
+      "description": "The apartment and balcony are both smoke-free."
+    },
+    {
+      "title": "Respect Quiet Hours",
+      "description": "Please keep noise low from 10 PM to 8 AM."
+    },
+    {
+      "title": "A/C Off When Away",
+      "description": "Turn off air conditioning when leaving the apartment."
+    },
+    {
+      "title": "Care for Furnishings",
+      "description": "Please treat the home, artwork, and appliances with care."
+    }
+  ],
+  "localTips": [
+    {
+      "title": "Restaurants Nearby",
+      "items": [
+        "Meson D'Bari for Dominican comfort food.",
+        "Segafredo for coffee and light breakfast.",
+        "Jalao for a more upscale local dinner."
+      ]
+    },
+    {
+      "title": "Essentials",
+      "items": [
+        "Farmacia Carol is nearby for quick pharmacy runs.",
+        "Nacional is the easiest grocery option for guests.",
+        "Uber is the most straightforward ride option."
+      ]
+    }
+  ],
+  "contacts": [
+    {
+      "label": "Host",
+      "name": "Casa Karaya Host",
+      "description": "Use this number first for guest questions, arrival support, or anything inside the apartment.",
+      "phone": "+18095550001",
+      "phoneLabel": "+1 (809) 555-0001",
+      "whatsapp": "https://wa.me/18095550001",
+      "primary": true
+    },
+    {
+      "label": "Building",
+      "name": "Concierge and Security",
+      "description": "Contact for lobby access, building issues, or after-hours support.",
+      "phone": "+18095550002",
+      "phoneLabel": "+1 (809) 555-0002",
+      "whatsapp": "",
+      "primary": false
+    },
+    {
+      "label": "Emergency",
+      "name": "National Emergency Services",
+      "description": "Police, fire, and ambulance.",
+      "phone": "911",
+      "phoneLabel": "911",
+      "whatsapp": "",
+      "primary": false
+    }
+  ]
+}

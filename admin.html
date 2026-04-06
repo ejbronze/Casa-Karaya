@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Casa Karaya Admin</title>
+  <meta name="description" content="Admin editor for Casa Karaya guest content." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="admin-shell">
+  <main class="admin-main">
+    <header class="admin-header">
+      <div>
+        <p class="section-label">Protected Editor</p>
+        <h1 class="admin-title">Casa Karaya Admin</h1>
+        <p class="admin-subtitle">Sign in to update the content your guests see on the welcome page. Changes save to the shared content file used by the site.</p>
+      </div>
+      <div class="admin-actions hide" id="topActions">
+        <a href="/" class="button button-secondary">View Guest Page</a>
+        <button class="button button-primary" type="button" id="saveTopButton">Save Changes</button>
+        <button class="button button-secondary" type="button" id="logoutTopButton">Log Out</button>
+      </div>
+    </header>
+
+    <div class="status-banner" id="statusBanner"></div>
+
+    <section class="login-panel" id="loginPanel">
+      <form id="loginForm">
+        <div class="field">
+          <label for="username">Username</label>
+          <input id="username" name="username" type="text" autocomplete="username" required />
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" autocomplete="current-password" required />
+        </div>
+        <div class="admin-actions">
+          <button class="button button-primary" type="submit">Sign In</button>
+          <a href="/" class="button button-secondary">Back to Site</a>
+        </div>
+      </form>
+    </section>
+
+    <section class="editor-panel hide" id="editorPanel">
+      <form id="editorForm">
+        <section class="panel-section">
+          <div class="panel-section-header">
+            <h2 class="panel-section-title">Site Details</h2>
+          </div>
+          <div class="form-grid">
+            <div class="field">
+              <label for="siteName">Home Name</label>
+              <input id="siteName" name="site.name" type="text" />
+            </div>
+            <div class="field">
+              <label for="siteLocation">Location</label>
+              <input id="siteLocationField" name="site.location" type="text" />
+            </div>
+            <div class="field full-width">
+              <label for="heroEyebrowField">Hero Eyebrow</label>
+              <input id="heroEyebrowField" name="site.heroEyebrow" type="text" />
+            </div>
+            <div class="field full-width">
+              <label for="heroTitleField">Hero Title</label>
+              <input id="heroTitleField" name="site.heroTitle" type="text" />
+            </div>
+            <div class="field full-width">
+              <label for="heroSubtitleField">Hero Subtitle</label>
+              <textarea id="heroSubtitleField" name="site.heroSubtitle"></textarea>
+            </div>
+            <div class="field">
+              <label for="ctaLabelField">Button Label</label>
+              <input id="ctaLabelField" name="site.ctaLabel" type="text" />
+            </div>
+            <div class="field full-width">
+              <label for="heroNoteField">Hero Note</label>
+              <textarea id="heroNoteField" name="site.heroNote"></textarea>
+            </div>
+            <div class="field full-width">
+              <label for="footerNoteField">Footer Note</label>
+              <textarea id="footerNoteField" name="site.footerNote"></textarea>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel-section">
+          <div class="panel-section-header">
+            <h2 class="panel-section-title">Quick Facts</h2>
+            <button class="small-button" type="button" data-add-list-item="quickFacts">Add Fact</button>
+          </div>
+          <p class="helper-copy">These power the hero essentials panel and the overview cards.</p>
+          <div class="repeater-list" id="quickFactsList"></div>
+        </section>
+
+        <section class="panel-section">
+          <div class="panel-section-header">
+            <h2 class="panel-section-title">Areas</h2>
+            <button class="small-button" type="button" data-add-list-item="areas">Add Area</button>
+          </div>
+          <p class="helper-copy">Each area supports a name, short summary, and one instruction per line.</p>
+          <div class="repeater-list" id="areasList"></div>
+        </section>
+
+        <section class="panel-section">
+          <div class="panel-section-header">
+            <h2 class="panel-section-title">Appliances</h2>
+            <button class="small-button" type="button" data-add-list-item="appliances">Add Appliance</button>
+          </div>
+          <div class="repeater-list" id="appliancesAdminList"></div>
+        </section>
+
+        <section class="panel-section">
+          <div class="panel-section-header">
+            <h2 class="panel-section-title">House Rules</h2>
+            <button class="small-button" type="button" data-add-list-item="houseRules">Add Rule</button>
+          </div>
+          <div class="repeater-list" id="rulesAdminList"></div>
+        </section>
+
+        <section class="panel-section">
+          <div class="panel-section-header">
+            <h2 class="panel-section-title">Local Tips</h2>
+            <button class="small-button" type="button" data-add-list-item="localTips">Add Tip Group</button>
+          </div>
+          <div class="repeater-list" id="tipsAdminList"></div>
+        </section>
+
+        <section class="panel-section">
+          <div class="panel-section-header">
+            <h2 class="panel-section-title">Contacts</h2>
+            <button class="small-button" type="button" data-add-list-item="contacts">Add Contact</button>
+          </div>
+          <div class="repeater-list" id="contactsAdminList"></div>
+        </section>
+
+        <div class="admin-actions">
+          <button class="button button-primary" type="submit">Save Changes</button>
+          <button class="button button-secondary" type="button" id="logoutBottomButton">Log Out</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <script src="admin.js"></script>
+</body>
+</html>

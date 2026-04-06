@@ -1,0 +1,19 @@
+{
+  "name": "casa-karaya",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Editable guest welcome guide and admin backend for Casa Karaya.",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "NODE_ENV=production node server.js",
+    "check": "node --check server.js && node --check script.js && node --check admin.js && node --check api/_lib/auth.mjs && node --check api/_lib/content-store.mjs && node --check api/content.mjs && node --check api/login.mjs && node --check api/logout.mjs && node --check api/session.mjs && node --check api/health.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@vercel/blob": "^1.1.1"
+  }
+}
