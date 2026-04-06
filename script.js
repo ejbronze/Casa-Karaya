@@ -24,13 +24,24 @@ const footerName = document.getElementById('footerName');
 const footerLocation = document.getElementById('footerLocation');
 const footerNote = document.getElementById('footerNote');
 const quickGrid = document.getElementById('quickGrid');
-const guideAccordions = document.getElementById('guideAccordions');
+const guideDashboard = document.getElementById('guideDashboard');
+const guideModal = document.getElementById('guideModal');
+const guideModalClose = document.getElementById('guideModalClose');
+const guideModalShell = document.getElementById('guideModalShell');
+const guideModalKicker = document.getElementById('guideModalKicker');
+const guideModalIcon = document.getElementById('guideModalIcon');
+const guideModalTitle = document.getElementById('guideModalTitle');
+const guideModalSummary = document.getElementById('guideModalSummary');
+const guideModalBody = document.getElementById('guideModalBody');
 const rulesGrid = document.getElementById('rulesGrid');
 const tipsGrid = document.getElementById('tipsGrid');
 const contactsGrid = document.getElementById('contactsGrid');
 
 let currentZoneData = {};
 let mapHasLoadedOnce = false;
+let currentGuideModalData = null;
+let guideModalView = 'details';
+let currentGuideItems = [];
 
 const defaultZoneMeta = {
   living: { title: 'Living / Dining', icon: iconTv() },
@@ -88,6 +99,11 @@ function closeNavMenu() {
   hamburger.classList.remove('open');
   hamburger.setAttribute('aria-expanded', 'false');
   overlay.classList.remove('show');
+}
+
+function syncBodyModalState() {
+  const hasOpenModal = mapModal.classList.contains('open') || guideModal.classList.contains('open');
+  document.body.classList.toggle('modal-open', hasOpenModal);
 }
 
 function updateNavVisibility() {
@@ -263,14 +279,13 @@ function openMapModal() {
 function closeMapModal() {
   mapModal.classList.remove('open');
   mapModal.setAttribute('aria-hidden', 'true');
-  document.body.classList.remove('modal-open');
   overlay.classList.remove('show');
   closeZonePanel();
+  syncBodyModalState();
 }
 
 function renderHero(content) {
   const site = content.site || {};
-  const facts = (content.quickFacts || []).slice(0, 4);
   heroEyebrow.textContent = site.location || 'Evaristo Morales · Santo Domingo';
   heroTitle.textContent = site.heroTitle || 'Apartment Guide';
   heroSubtitle.innerHTML = `${escapeHtml(site.heroNote || 'Named for the Taíno moon goddess.')}<br />${escapeHtml(site.heroSubtitle || 'Your home, illuminated.')}`;
@@ -278,13 +293,7 @@ function renderHero(content) {
   footerName.textContent = site.name || 'Casa Karaya';
   footerLocation.innerHTML = `${escapeHtml(site.location || 'Evaristo Morales · Santo Domingo')}<br />Dominican Republic`;
   footerNote.innerHTML = `${escapeHtml(site.footerNote || 'Live editable guide')}<br />May your stay be luminous.`;
-
-  heroFacts.innerHTML = facts.map((fact) => `
-    <div class="hero-fact-pill">
-      <span>${escapeHtml(fact.label)}</span>
-      <strong>${escapeHtml(fact.value)}</strong>
-    </div>
-  `).join('');
+  heroFacts.innerHTML = '';
 }
 
 function renderQuickAccess(content) {
@@ -321,75 +330,171 @@ function renderQuickAccess(content) {
       }
 
       if (button.dataset.target) {
-        smoothScrollTo(button.dataset.target);
-        const accordion = document.getElementById(button.dataset.target);
-        if (accordion && accordion.classList.contains('accordion-item')) {
-          window.setTimeout(() => openAccordion(accordion), 350);
+        const guideItem = currentGuideItems.find((item) => item.id === button.dataset.target);
+        if (guideItem) {
+          smoothScrollTo('apartment-guide');
+          window.setTimeout(() => openGuideModal(guideItem), 360);
+          return;
         }
+
+        smoothScrollTo(button.dataset.target);
       }
     });
   });
 }
 
-function createGuideItem(id, title, icon, bodyHtml, classes = '') {
+function createInfoCard(rows) {
   return `
-    <div class="accordion-item ${classes}" id="${escapeHtml(id)}">
-      <button class="accordion-header" type="button">
-        <div class="accordion-icon-wrap">${icon}</div>
-        <span>${escapeHtml(title)}</span>
-        <div class="accordion-arrow">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    <div class="info-card highlight-card">
+      ${rows.map((row) => `
+        <div class="info-row">
+          <span class="info-label">${escapeHtml(row.label)}</span>
+          <span class="info-value ${row.copy ? 'copy-text' : ''}" ${row.copy ? `data-copy="${escapeHtml(row.value)}"` : ''}>${escapeHtml(row.value)}</span>
         </div>
-      </button>
-      <div class="accordion-body">${bodyHtml}</div>
+      `).join('')}
     </div>
   `;
 }
 
-function renderGuide(content) {
+function parseWifiPassword(detail) {
+  if (!detail) return '';
+  const match = String(detail).match(/password\s*[:\-]\s*(.+)/i);
+  return match ? match[1].trim() : '';
+}
+
+function buildWifiQrUrl(ssid, password) {
+  const payload = `WIFI:T:WPA;S:${ssid};P:${password};;`;
+  return `https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=${encodeURIComponent(payload)}`;
+}
+
+function createGuideCard(item) {
+  return `
+    <button class="guide-card guide-card-${escapeHtml(item.theme || 'default')}" id="${escapeHtml(item.id)}" type="button" data-guide-item="${escapeHtml(item.id)}">
+      <div class="guide-card-topline">${escapeHtml(item.kicker)}</div>
+      <div class="guide-card-icon">${item.icon}</div>
+      <h3>${escapeHtml(item.title)}</h3>
+      <p>${escapeHtml(item.summary)}</p>
+      <span class="guide-card-cta">${escapeHtml(item.cta || 'Open details')}</span>
+    </button>
+  `;
+}
+
+function closeGuideModal() {
+  guideModal.classList.remove('open');
+  guideModal.setAttribute('aria-hidden', 'true');
+  currentGuideModalData = null;
+  guideModalView = 'details';
+  syncBodyModalState();
+}
+
+function renderGuideModalView(item, view = 'details') {
+  guideModalKicker.textContent = item.kicker;
+  guideModalIcon.innerHTML = item.icon;
+  guideModalTitle.textContent = item.title;
+  guideModalSummary.textContent = item.summary;
+  guideModalShell.classList.toggle('guide-modal-shell-tappable', item.type === 'wifi' && Boolean(item.qrUrl));
+
+  if (item.type === 'wifi' && view === 'qr') {
+    guideModalBody.innerHTML = `
+      <div class="wifi-qr-panel">
+        <p class="wifi-qr-kicker">Scan to join the network</p>
+        <img src="${escapeHtml(item.qrUrl)}" alt="QR code for ${escapeHtml(item.network)}" class="wifi-qr-image" />
+        <div class="wifi-qr-meta">
+          <strong>${escapeHtml(item.network)}</strong>
+          <span>${escapeHtml(item.password ? `Password: ${item.password}` : 'Open network')}</span>
+        </div>
+        <p class="guide-note">Tap anywhere on this panel to return to the network details.</p>
+      </div>
+    `;
+    attachCopyActions();
+    return;
+  }
+
+  guideModalBody.innerHTML = item.bodyHtml;
+  attachCopyActions();
+}
+
+function openGuideModal(item, options = {}) {
+  if (!item) return;
+  currentGuideModalData = item;
+  guideModalView = options.view || 'details';
+  renderGuideModalView(item, guideModalView);
+  guideModal.classList.add('open');
+  guideModal.setAttribute('aria-hidden', 'false');
+  closeNavMenu();
+  syncBodyModalState();
+}
+
+function buildGuideItems(content) {
   const site = content.site || {};
   const facts = content.quickFacts || [];
   const appliances = content.appliances || [];
   const areas = content.areas || [];
 
   const wifi = facts.find((fact) => fact.label.toLowerCase() === 'wifi');
+  const wifiNetwork = wifi?.value || 'Update in admin';
+  const wifiPassword = parseWifiPassword(wifi?.detail);
   const wifiBody = `
-    <div class="info-card highlight-card">
-      <div class="info-row">
-        <span class="info-label">Network</span>
-        <span class="info-value copy-text" data-copy="${escapeHtml(wifi?.value || '')}">${escapeHtml(wifi?.value || 'Update in admin')}</span>
-      </div>
-      <div class="info-row">
-        <span class="info-label">Details</span>
-        <span class="info-value">${escapeHtml(wifi?.detail || 'Update in admin')}</span>
-      </div>
-    </div>
+    ${createInfoCard([
+      { label: 'Network', value: wifiNetwork, copy: wifiNetwork !== 'Update in admin' },
+      { label: 'Details', value: wifi?.detail || 'Update in admin' }
+    ])}
     <p class="guide-note">${escapeHtml(site.heroSubtitle || 'Keep your guest essentials clear and easy to copy.')}</p>
-    <div class="tip-box"><strong>Tip:</strong> Tap the network field to copy it.</div>
+    <div class="tip-box"><strong>Tap the network name to copy it.</strong> Tap this panel again to reveal a scannable WiFi code for guests.</div>
   `;
 
-  const applianceItems = appliances.map((appliance) => createGuideItem(
-    `guide-${slugify(appliance.name)}`,
-    appliance.name,
-    applianceIconFor(appliance.name),
-    createBulletList(appliance.instructions)
-  ));
+  const wifiItem = {
+    id: 'guide-wifi',
+    type: 'wifi',
+    kicker: 'Guest Essential',
+    title: 'WiFi & Internet',
+    summary: wifi?.detail || 'Tap in for network details and a scannable QR code.',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><circle cx="12" cy="20" r="1" fill="currentColor"/></svg>`,
+    bodyHtml: wifiBody,
+    cta: 'View WiFi',
+    theme: 'wifi',
+    network: wifiNetwork,
+    password: wifiPassword,
+    qrUrl: wifiNetwork !== 'Update in admin' && wifiPassword ? buildWifiQrUrl(wifiNetwork, wifiPassword) : ''
+  };
 
-  const roomItems = areas.map((area) => createGuideItem(
-    `room-${slugify(area.name)}`,
-    area.name,
-    roomIconFor(area.name),
-    `<p class="guide-note">${escapeHtml(area.summary || '')}</p>${createBulletList(area.instructions)}`
-  ));
+  const applianceItems = appliances.map((appliance) => ({
+    id: `guide-${slugify(appliance.name)}`,
+    type: 'appliance',
+    kicker: 'Appliance Guide',
+    title: appliance.name,
+    summary: appliance.summary || 'Open for step-by-step instructions.',
+    icon: applianceIconFor(appliance.name),
+    bodyHtml: `${appliance.summary ? `<p class="guide-note">${escapeHtml(appliance.summary)}</p>` : ''}${createBulletList(appliance.instructions)}`,
+    cta: 'Open instructions',
+    theme: 'appliance'
+  }));
 
-  guideAccordions.innerHTML = [
-    createGuideItem('guide-wifi', 'WiFi & Internet', `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><circle cx="12" cy="20" r="1" fill="currentColor"/></svg>`, wifiBody, 'open'),
-    ...applianceItems,
-    ...roomItems
-  ].join('');
+  const roomItems = areas.map((area) => ({
+    id: `room-${slugify(area.name)}`,
+    type: 'room',
+    kicker: 'Room Notes',
+    title: area.name,
+    summary: area.summary || 'Open for the room details and guest notes.',
+    icon: roomIconFor(area.name),
+    bodyHtml: `${area.summary ? `<p class="guide-note">${escapeHtml(area.summary)}</p>` : ''}${createBulletList(area.instructions)}`,
+    cta: 'Open room guide',
+    theme: 'room'
+  }));
 
-  attachAccordions();
-  attachCopyActions();
+  return [wifiItem, ...applianceItems, ...roomItems];
+}
+
+function renderGuide(content) {
+  currentGuideItems = buildGuideItems(content);
+  guideDashboard.innerHTML = currentGuideItems.map(createGuideCard).join('');
+
+  guideDashboard.querySelectorAll('[data-guide-item]').forEach((card) => {
+    card.addEventListener('click', () => {
+      const item = currentGuideItems.find((entry) => entry.id === card.dataset.guideItem);
+      openGuideModal(item);
+    });
+  });
 }
 
 function applianceIconFor(name) {
@@ -450,28 +555,6 @@ function renderContacts(content) {
 
 function slugify(value) {
   return String(value).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-}
-
-function openAccordion(item) {
-  if (item.classList.contains('open')) return;
-  const siblings = item.parentElement.querySelectorAll('.accordion-item.open');
-  siblings.forEach((sibling) => {
-    if (sibling !== item) sibling.classList.remove('open');
-  });
-  item.classList.add('open');
-}
-
-function attachAccordions() {
-  document.querySelectorAll('.accordion-header').forEach((header) => {
-    header.addEventListener('click', () => {
-      const item = header.closest('.accordion-item');
-      if (item.classList.contains('open')) {
-        item.classList.remove('open');
-      } else {
-        openAccordion(item);
-      }
-    });
-  });
 }
 
 function attachCopyActions() {
@@ -580,7 +663,18 @@ document.getElementById('openMapHero').addEventListener('click', openMapModal);
 document.getElementById('openMapTeaser').addEventListener('click', openMapModal);
 mapModalClose.addEventListener('click', closeMapModal);
 mapModal.querySelector('[data-close-map]').addEventListener('click', closeMapModal);
+guideModalClose.addEventListener('click', closeGuideModal);
+guideModal.querySelector('[data-close-guide]').addEventListener('click', closeGuideModal);
 zoneClose.addEventListener('click', closeZonePanel);
+
+guideModalShell.addEventListener('click', (event) => {
+  if (!currentGuideModalData || currentGuideModalData.type !== 'wifi') return;
+  if (event.target.closest('.guide-modal-close') || event.target.closest('.copy-text')) return;
+  if (!currentGuideModalData.qrUrl) return;
+
+  guideModalView = guideModalView === 'details' ? 'qr' : 'details';
+  renderGuideModalView(currentGuideModalData, guideModalView);
+});
 
 window.addEventListener('scroll', updateNavVisibility, { passive: true });
 window.addEventListener('resize', updateNavVisibility);
@@ -607,6 +701,7 @@ window.addEventListener('scroll', () => {
 
 document.addEventListener('keydown', (event) => {
   if (event.key === 'Escape') {
+    closeGuideModal();
     closeZonePanel();
     closeNavMenu();
     closeMapModal();

@@ -94,7 +94,7 @@
       <div class="map-teaser-card">
         <div class="map-teaser-copy">
           <p class="map-kicker">Room-by-room navigation</p>
-          <h3>Exact layout, now with a guided modal experience.</h3>
+          <h3>See the home the way your guests will move through it.</h3>
           <p>The map loads in its own immersive view so guests can move through the apartment the way they actually experience it.</p>
           <button type="button" class="btn-primary" id="openMapTeaser">Launch the Interactive Map</button>
         </div>
@@ -116,7 +116,7 @@
       <div class="section-label">How-To Guide</div>
       <h2 class="section-title">Apartment Guide</h2>
       <p class="section-sub" id="guideIntro">Everything guests usually ask first, plus the home rules and local notes that make the stay smoother.</p>
-      <div class="accordion-grid" id="guideAccordions"></div>
+      <div class="guide-dashboard" id="guideDashboard"></div>
     </div>
   </section>
 
@@ -170,6 +170,20 @@
   </footer>
 
   <div class="overlay" id="overlay"></div>
+
+  <div class="guide-modal" id="guideModal" aria-hidden="true">
+    <div class="guide-modal-backdrop" data-close-guide></div>
+    <div class="guide-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="guideModalTitle">
+      <button class="guide-modal-close" id="guideModalClose" aria-label="Close guide details">✕</button>
+      <div class="guide-modal-shell" id="guideModalShell">
+        <div class="guide-modal-kicker" id="guideModalKicker">Guide Detail</div>
+        <div class="guide-modal-icon" id="guideModalIcon"></div>
+        <h3 class="guide-modal-title" id="guideModalTitle">Guide Item</h3>
+        <p class="guide-modal-summary" id="guideModalSummary"></p>
+        <div class="guide-modal-body" id="guideModalBody"></div>
+      </div>
+    </div>
+  </div>
 
   <div class="map-modal" id="mapModal" aria-hidden="true">
     <div class="map-modal-backdrop" data-close-map></div>

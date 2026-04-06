@@ -7,6 +7,9 @@ The project now combines:
 - A branded landing page with the original Casa Karaya visual language
 - A logo-based loading animation on page load
 - A full interactive apartment map inside a modal
+- A dashboard-style apartment guide with card-based navigation
+- Detail modals for each guide item, with a focused room-by-room or appliance-by-appliance flow
+- A two-step WiFi experience that can reveal a scannable QR code for the network
 - A protected admin area at `/admin`
 - A content API that persists edits
 - Vercel Blob storage support for live production content
@@ -19,8 +22,12 @@ The public guide at `/` includes:
 - Quick access buttons for common guest needs
 - An interactive map modal that uses the original apartment SVG layout
 - A map loading animation before the interactive floor plan appears
-- Expandable guide sections for WiFi, appliances, rooms, and guest instructions
+- A dashboard of guide cards for WiFi, appliances, rooms, and guest instructions
+- Guide detail modals with a dedicated close button in the top-right corner
+- A WiFi modal flow that first shows network details and then reveals a guest-scannable QR code on the next tap
 - House rules, local notes, and emergency contacts
+
+This keeps the landing page feeling more like an interactive hospitality dashboard and less like a traditional FAQ or accordion list. Guests can move visually through the guide, open only what they need, and get focused instructions without losing the overall structure of the page.
 
 ## Admin Experience
 
@@ -35,6 +42,14 @@ The admin page at `/admin` allows you to sign in and update:
 - Important contacts
 
 Those updates are immediately reflected in the live guest guide after saving.
+
+The admin content model still drives the public experience, but the rendering layer now presents that content in multiple formats:
+
+- Quick access shortcuts
+- Interactive map room guidance
+- Dashboard cards
+- Guide detail modals
+- WiFi QR reveal flow when network credentials are available
 
 ## Content Storage
 
@@ -55,6 +70,14 @@ Relevant files:
 - `api/health.mjs`
 - `api/_lib/auth.mjs`
 - `api/_lib/content-store.mjs`
+
+Guest-facing UI files:
+
+- `index.html`
+- `script.js`
+- `styles.css`
+
+These files control the guest landing page, modal system, interactive map presentation, dashboard card rendering, and the WiFi QR reveal experience.
 
 ## Local Development
 
@@ -93,6 +116,8 @@ Notes:
 - Editable content is persisted through Blob storage
 - Admin auth uses signed cookies
 - Health endpoint is available at `/api/health`
+- The guest guide is deployed as a branded static front-end plus serverless API routes for content and auth
+- The WiFi QR experience is generated dynamically from saved WiFi credentials in the content payload
 
 ### Other Node Hosts
 
@@ -114,6 +139,8 @@ Required environment variables:
 - Production startup refuses the default placeholder admin password
 - The live Vercel deployment uses Blob-backed content instead of filesystem writes
 - Pulled env files are ignored through `.gitignore`
+- The current public UI favors card-based guide discovery over accordion-style interaction
+- Guide cards, room map overlays, and modal detail panels all read from the same saved content source
 
 ## Scripts
 
