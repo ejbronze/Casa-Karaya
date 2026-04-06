@@ -24,7 +24,6 @@ const footerName = document.getElementById('footerName');
 const footerLocation = document.getElementById('footerLocation');
 const footerNote = document.getElementById('footerNote');
 const quickGrid = document.getElementById('quickGrid');
-const guideDashboard = document.getElementById('guideDashboard');
 const guideModal = document.getElementById('guideModal');
 const guideModalClose = document.getElementById('guideModalClose');
 const guideModalShell = document.getElementById('guideModalShell');
@@ -507,14 +506,6 @@ function buildGuideItems(content) {
 
 function renderGuide(content) {
   currentGuideItems = buildGuideItems(content);
-  guideDashboard.innerHTML = currentGuideItems.map(createGuideCard).join('');
-
-  guideDashboard.querySelectorAll('[data-guide-item]').forEach((card) => {
-    card.addEventListener('click', () => {
-      const item = currentGuideItems.find((entry) => entry.id === card.dataset.guideItem);
-      openGuideModal(item);
-    });
-  });
 }
 
 function applianceIconFor(name) {
