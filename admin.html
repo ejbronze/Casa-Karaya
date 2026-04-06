@@ -14,38 +14,28 @@
   <main class="admin-main">
     <header class="admin-header">
       <div>
-        <p class="section-label">Protected Editor</p>
+        <p class="section-label">Guide Editor</p>
         <h1 class="admin-title">Casa Karaya Admin</h1>
-        <p class="admin-subtitle">Sign in to update the content your guests see on the welcome page. Changes save to the shared content file used by the site.</p>
+        <p class="admin-subtitle">Update the content your guests see on the welcome page, and choose which guide widgets are visible. Changes save to the shared content used by the live site.</p>
       </div>
-      <div class="admin-actions hide" id="topActions">
+      <div class="admin-actions" id="topActions">
         <a href="/" class="button button-secondary">View Guest Page</a>
         <button class="button button-primary" type="button" id="saveTopButton">Save Changes</button>
-        <button class="button button-secondary" type="button" id="logoutTopButton">Log Out</button>
       </div>
     </header>
 
     <div class="status-banner" id="statusBanner"></div>
 
-    <section class="login-panel" id="loginPanel">
-      <form id="loginForm">
-        <div class="field">
-          <label for="username">Username</label>
-          <input id="username" name="username" type="text" autocomplete="username" required />
-        </div>
-        <div class="field">
-          <label for="password">Password</label>
-          <input id="password" name="password" type="password" autocomplete="current-password" required />
-        </div>
-        <div class="admin-actions">
-          <button class="button button-primary" type="submit">Sign In</button>
-          <a href="/" class="button button-secondary">Back to Site</a>
-        </div>
-      </form>
-    </section>
-
-    <section class="editor-panel hide" id="editorPanel">
+    <section class="editor-panel" id="editorPanel">
       <form id="editorForm">
+        <section class="panel-section">
+          <div class="panel-section-header">
+            <h2 class="panel-section-title">Guide Widgets</h2>
+          </div>
+          <p class="helper-copy">Turn individual guide items on or off without deleting their content. Hidden items stay saved here in admin.</p>
+          <div class="repeater-list" id="widgetVisibilityList"></div>
+        </section>
+
         <section class="panel-section">
           <div class="panel-section-header">
             <h2 class="panel-section-title">Site Details</h2>
@@ -138,7 +128,7 @@
 
         <div class="admin-actions">
           <button class="button button-primary" type="submit">Save Changes</button>
-          <button class="button button-secondary" type="button" id="logoutBottomButton">Log Out</button>
+          <a href="/" class="button button-secondary">Back to Site</a>
         </div>
       </form>
     </section>

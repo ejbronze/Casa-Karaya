@@ -1,14 +1,11 @@
 'use strict';
 
-const loginPanel = document.getElementById('loginPanel');
 const editorPanel = document.getElementById('editorPanel');
-const loginForm = document.getElementById('loginForm');
 const editorForm = document.getElementById('editorForm');
 const statusBanner = document.getElementById('statusBanner');
 const topActions = document.getElementById('topActions');
 const saveTopButton = document.getElementById('saveTopButton');
-const logoutTopButton = document.getElementById('logoutTopButton');
-const logoutBottomButton = document.getElementById('logoutBottomButton');
+const widgetVisibilityList = document.getElementById('widgetVisibilityList');
 
 const repeaters = {
   quickFacts: document.getElementById('quickFactsList'),
@@ -38,12 +35,6 @@ function showStatus(message, type = 'success') {
 function hideStatus() {
   statusBanner.className = 'status-banner';
   statusBanner.textContent = '';
-}
-
-function setAuthenticatedState(isAuthenticated) {
-  loginPanel.classList.toggle('hide', isAuthenticated);
-  editorPanel.classList.toggle('hide', !isAuthenticated);
-  topActions.classList.toggle('hide', !isAuthenticated);
 }
 
 function splitLines(value) {
@@ -135,6 +126,10 @@ function humanizeType(type) {
   }[type] || 'Item';
 }
 
+function slugify(value) {
+  return String(value).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+}
+
 function escapeHtml(value) {
   return String(value)
     .replaceAll('&', '&amp;')
@@ -155,6 +150,45 @@ function fillSiteFields(content) {
   document.getElementById('footerNoteField').value = content.site.footerNote || '';
 }
 
+function buildWidgetDefinitions(content) {
+  return [
+    { id: 'guide-wifi', label: 'WiFi & Internet', detail: 'Guest Essential' },
+    ...(content.appliances || []).map((item) => ({
+      id: `guide-${slugify(item.name)}`,
+      label: item.name || 'Untitled Appliance',
+      detail: 'Appliance Guide'
+    })),
+    ...(content.areas || []).map((item) => ({
+      id: `room-${slugify(item.name)}`,
+      label: item.name || 'Untitled Area',
+      detail: 'Room Notes'
+    })),
+    { id: 'guide-local-notes', label: 'Helpful Extras', detail: 'Local Guide' }
+  ];
+}
+
+function renderWidgetVisibility(content) {
+  const visibility = content.widgetVisibility || {};
+  const widgets = buildWidgetDefinitions(content);
+
+  widgetVisibilityList.innerHTML = widgets.map((widget) => `
+    <article class="repeater-item">
+      <div class="repeater-item-head">
+        <h4>${escapeHtml(widget.label)}</h4>
+        <span class="helper-copy">${escapeHtml(widget.detail)}</span>
+      </div>
+      <div class="form-grid">
+        <div class="inline-field">
+          <label class="checkbox-row">
+            <input type="checkbox" data-widget-key="${escapeHtml(widget.id)}" ${visibility[widget.id] !== false ? 'checked' : ''} />
+            <span>Show this guide widget</span>
+          </label>
+        </div>
+      </div>
+    </article>
+  `).join('');
+}
+
 function renderRepeater(type, items) {
   const container = repeaters[type];
   container.innerHTML = '';
@@ -166,12 +200,18 @@ function renderRepeater(type, items) {
 function renderEditor(content) {
   currentContent = structuredClone(content);
   fillSiteFields(currentContent);
+  renderWidgetVisibility(currentContent);
   renderRepeater('quickFacts', currentContent.quickFacts || []);
   renderRepeater('areas', currentContent.areas || []);
   renderRepeater('appliances', currentContent.appliances || []);
   renderRepeater('houseRules', currentContent.houseRules || []);
   renderRepeater('localTips', currentContent.localTips || []);
   renderRepeater('contacts', currentContent.contacts || []);
+}
+
+function readWidgetVisibility() {
+  const nodes = widgetVisibilityList.querySelectorAll('[data-widget-key]');
+  return Object.fromEntries(Array.from(nodes).map((node) => [node.dataset.widgetKey, node.checked]));
 }
 
 function readRepeater(type) {
@@ -235,6 +275,7 @@ function collectContentFromForm() {
       heroNote: document.getElementById('heroNoteField').value.trim(),
       footerNote: document.getElementById('footerNoteField').value.trim()
     },
+    widgetVisibility: readWidgetVisibility(),
     quickFacts: readRepeater('quickFacts'),
     areas: readRepeater('areas'),
     appliances: readRepeater('appliances'),
@@ -272,47 +313,14 @@ async function fetchJson(url, options = {}) {
   return response.json();
 }
 
-async function checkSession() {
+async function loadEditor() {
   try {
-    const data = await fetchJson('/api/session');
-    if (!data.authenticated) {
-      setAuthenticatedState(false);
-      return;
-    }
-
     const content = await fetchJson('/api/content');
     renderEditor(content);
-    setAuthenticatedState(true);
   } catch (error) {
-    setAuthenticatedState(false);
     showStatus(error.message, 'error');
   }
 }
-
-loginForm.addEventListener('submit', async (event) => {
-  event.preventDefault();
-  hideStatus();
-
-  const formData = new FormData(loginForm);
-
-  try {
-    await fetchJson('/api/login', {
-      method: 'POST',
-      body: JSON.stringify({
-        username: formData.get('username'),
-        password: formData.get('password')
-      })
-    });
-
-    const content = await fetchJson('/api/content');
-    renderEditor(content);
-    setAuthenticatedState(true);
-    loginForm.reset();
-    showStatus('Signed in successfully.');
-  } catch (error) {
-    showStatus(error.message, 'error');
-  }
-});
 
 editorForm.addEventListener('submit', async (event) => {
   event.preventDefault();
@@ -338,6 +346,13 @@ document.addEventListener('click', async (event) => {
     const nextItems = readRepeater(type);
     nextItems.push(templates[type]());
     renderRepeater(type, nextItems);
+    const draftContent = {
+      ...(currentContent || {}),
+      widgetVisibility: readWidgetVisibility(),
+      areas: type === 'areas' ? nextItems : readRepeater('areas'),
+      appliances: type === 'appliances' ? nextItems : readRepeater('appliances')
+    };
+    renderWidgetVisibility(draftContent);
     return;
   }
 
@@ -348,27 +363,21 @@ document.addEventListener('click', async (event) => {
     const index = Number(item.dataset.index);
     const nextItems = readRepeater(type).filter((_, itemIndex) => itemIndex !== index);
     renderRepeater(type, nextItems);
+    const draftContent = {
+      ...(currentContent || {}),
+      widgetVisibility: readWidgetVisibility(),
+      areas: type === 'areas' ? nextItems : readRepeater('areas'),
+      appliances: type === 'appliances' ? nextItems : readRepeater('appliances')
+    };
+    renderWidgetVisibility(draftContent);
     return;
   }
 });
-
-async function logout() {
-  hideStatus();
-
-  try {
-    await fetchJson('/api/logout', { method: 'POST' });
-    setAuthenticatedState(false);
-    showStatus('You have been logged out.');
-  } catch (error) {
-    showStatus(error.message, 'error');
-  }
-}
 
 saveTopButton.addEventListener('click', () => {
   editorForm.requestSubmit();
 });
 
-logoutTopButton.addEventListener('click', logout);
-logoutBottomButton.addEventListener('click', logout);
-
-checkSession();
+editorPanel.classList.remove('hide');
+topActions.classList.remove('hide');
+loadEditor();

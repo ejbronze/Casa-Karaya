@@ -1,4 +1,4 @@
-import { json, requireSession, readJsonBody } from './_lib/auth.mjs';
+import { json, readJsonBody } from './_lib/auth.mjs';
 import { readContent, writeContent } from './_lib/content-store.mjs';
 
 export default async function handler(req, res) {
@@ -13,8 +13,6 @@ export default async function handler(req, res) {
   }
 
   if (req.method === 'PUT') {
-    if (!requireSession(req, res)) return;
-
     try {
       const payload = await readJsonBody(req);
       await writeContent(payload);

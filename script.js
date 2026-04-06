@@ -34,7 +34,6 @@ const guideModalTitle = document.getElementById('guideModalTitle');
 const guideModalSummary = document.getElementById('guideModalSummary');
 const guideModalBody = document.getElementById('guideModalBody');
 const rulesGrid = document.getElementById('rulesGrid');
-const tipsGrid = document.getElementById('tipsGrid');
 const contactsGrid = document.getElementById('contactsGrid');
 
 let currentZoneData = {};
@@ -302,6 +301,7 @@ function renderQuickAccess(content) {
   const water = findAppliance(content.appliances || [], 'Water Heater');
   const kitchen = findArea(content.areas || [], 'Kitchen');
   const tv = findAppliance(content.appliances || [], 'Smart TV');
+  const visibleGuideIds = new Set(currentGuideItems.map((item) => item.id));
 
   const buttons = [
     { id: 'wifi', label: 'WiFi', target: 'guide-wifi', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><circle cx="12" cy="20" r="1" fill="currentColor"/></svg>`, detail: network?.value || 'Internet' },
@@ -310,9 +310,9 @@ function renderQuickAccess(content) {
     { id: 'kitchen', label: 'Kitchen', target: 'room-kitchen', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="7" rx="1"/><path d="M5 10v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8"/><path d="M9 10v4h6v-4"/></svg>`, detail: kitchen?.summary || 'Cooking notes' },
     { id: 'map', label: 'Map', action: 'open-map', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 6.5 9 4l6 2.5 6-2.5v13L15 19l-6-2.5L3 19v-12.5Z"/><path d="M9 4v12.5"/><path d="M15 6.5V19"/></svg>`, detail: 'Interactive layout' },
     { id: 'rules', label: 'House Rules', target: 'house-rules', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>`, detail: 'Stay details' },
-    { id: 'tips', label: 'Local Notes', target: 'local-guide', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>`, detail: 'Nearby favorites' },
+    { id: 'tips', label: 'Local Notes', target: 'guide-local-notes', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>`, detail: 'Nearby favorites' },
     { id: 'tv', label: 'TV / Streaming', target: 'guide-smart-tv', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="15" rx="2"/><polyline points="17 2 12 7 7 2"/></svg>`, detail: tv?.summary || 'Entertainment' }
-  ];
+  ].filter((button) => !button.target || !button.target.startsWith('guide-') && !button.target.startsWith('room-') || visibleGuideIds.has(button.target));
 
   quickGrid.innerHTML = buttons.map((button) => `
     <button class="quick-btn" data-target="${button.target || ''}" data-action="${button.action || ''}">
@@ -430,6 +430,7 @@ function buildGuideItems(content) {
   const facts = content.quickFacts || [];
   const appliances = content.appliances || [];
   const areas = content.areas || [];
+  const localTips = content.localTips || [];
 
   const wifi = facts.find((fact) => fact.label.toLowerCase() === 'wifi');
   const wifiNetwork = wifi?.value || 'Update in admin';
@@ -482,7 +483,26 @@ function buildGuideItems(content) {
     theme: 'room'
   }));
 
-  return [wifiItem, ...applianceItems, ...roomItems];
+  const localNotesItem = {
+    id: 'guide-local-notes',
+    type: 'local',
+    kicker: 'Local Guide',
+    title: 'Helpful Extras',
+    summary: 'Nearby favorites, useful local notes, and stay extras in one place.',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>`,
+    bodyHtml: localTips.length ? localTips.map((tip) => `
+      <div class="tip-card">
+        <h3>${escapeHtml(tip.title)}</h3>
+        ${createBulletList(tip.items)}
+      </div>
+    `).join('') : '<p class="guide-note">Local recommendations and extra notes can be added from the admin page.</p>',
+    cta: 'Open local notes',
+    theme: 'local'
+  };
+
+  const visibility = content.widgetVisibility || {};
+  return [wifiItem, ...applianceItems, ...roomItems, localNotesItem]
+    .filter((item) => visibility[item.id] !== false);
 }
 
 function renderGuide(content) {
@@ -526,16 +546,6 @@ function renderRules(content) {
         <strong>${escapeHtml(rule.title)}</strong>
         <span>${escapeHtml(rule.description)}</span>
       </div>
-    </div>
-  `).join('');
-}
-
-function renderTips(content) {
-  const tips = content.localTips || [];
-  tipsGrid.innerHTML = tips.map((tip) => `
-    <div class="tip-card">
-      <h3>${escapeHtml(tip.title)}</h3>
-      ${createBulletList(tip.items)}
     </div>
   `).join('');
 }
@@ -606,10 +616,9 @@ function hidePageLoader() {
 
 function renderContent(content) {
   renderHero(content);
-  renderQuickAccess(content);
   renderGuide(content);
+  renderQuickAccess(content);
   renderRules(content);
-  renderTips(content);
   renderContacts(content);
   currentZoneData = buildZoneData(content);
 }

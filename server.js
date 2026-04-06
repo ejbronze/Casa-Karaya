@@ -1,7 +1,6 @@
 import http from 'http';
 import fs from 'fs';
 import path from 'path';
-import crypto from 'crypto';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -10,12 +9,7 @@ const __dirname = path.dirname(__filename);
 const PORT = Number(process.env.PORT || 3000);
 const HOST = process.env.HOST || '127.0.0.1';
 const CONTENT_PATH = path.join(__dirname, 'content.json');
-const SESSION_COOKIE = 'casa_karaya_session';
-const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'changeme-casa-karaya';
 const IS_PRODUCTION = process.env.NODE_ENV === 'production';
-
-const sessions = new Map();
 
 const contentTypeByExt = {
   '.css': 'text/css; charset=utf-8',
@@ -60,59 +54,6 @@ function readBody(request) {
     request.on('end', () => resolve(body));
     request.on('error', reject);
   });
-}
-
-function parseCookies(request) {
-  const cookieHeader = request.headers.cookie || '';
-  return cookieHeader.split(';').reduce((cookies, pair) => {
-    const [rawName, ...rawValue] = pair.trim().split('=');
-    if (!rawName) return cookies;
-    cookies[rawName] = decodeURIComponent(rawValue.join('='));
-    return cookies;
-  }, {});
-}
-
-function getSession(request) {
-  const cookies = parseCookies(request);
-  const sessionId = cookies[SESSION_COOKIE];
-  return sessionId ? sessions.get(sessionId) : null;
-}
-
-function requestIsSecure(request) {
-  const protoHeader = request.headers['x-forwarded-proto'];
-  if (typeof protoHeader === 'string') {
-    return protoHeader.split(',')[0].trim() === 'https';
-  }
-
-  return false;
-}
-
-function createSession(request, response) {
-  const sessionId = crypto.randomBytes(24).toString('hex');
-  sessions.set(sessionId, {
-    createdAt: Date.now()
-  });
-
-  const secureFlag = requestIsSecure(request) ? '; Secure' : '';
-  response.setHeader('Set-Cookie', `${SESSION_COOKIE}=${sessionId}; HttpOnly; SameSite=Lax; Path=/; Max-Age=28800${secureFlag}`);
-}
-
-function clearSession(request, response) {
-  const cookies = parseCookies(request);
-  const sessionId = cookies[SESSION_COOKIE];
-  if (sessionId) {
-    sessions.delete(sessionId);
-  }
-  response.setHeader('Set-Cookie', `${SESSION_COOKIE}=; HttpOnly; SameSite=Lax; Path=/; Max-Age=0`);
-}
-
-function requireAuth(request, response) {
-  if (getSession(request)) {
-    return true;
-  }
-
-  sendJson(response, 401, { error: 'You must sign in to access this action.' });
-  return false;
 }
 
 function readContentFile() {
@@ -179,37 +120,6 @@ export async function requestListener(request, response) {
     return;
   }
 
-  if ((request.method === 'GET' || request.method === 'HEAD') && pathname === '/api/session') {
-    sendJson(response, 200, { authenticated: Boolean(getSession(request)) });
-    return;
-  }
-
-  if (request.method === 'POST' && pathname === '/api/login') {
-    try {
-      const rawBody = await readBody(request);
-      const body = JSON.parse(rawBody || '{}');
-      const username = String(body.username || '');
-      const password = String(body.password || '');
-
-      if (username !== ADMIN_USERNAME || password !== ADMIN_PASSWORD) {
-        sendJson(response, 401, { error: 'Invalid username or password.' });
-        return;
-      }
-
-      createSession(request, response);
-      sendJson(response, 200, { ok: true });
-    } catch {
-      sendJson(response, 400, { error: 'Login request could not be processed.' });
-    }
-    return;
-  }
-
-  if (request.method === 'POST' && pathname === '/api/logout') {
-    clearSession(request, response);
-    sendJson(response, 200, { ok: true });
-    return;
-  }
-
   if ((request.method === 'GET' || request.method === 'HEAD') && pathname === '/api/content') {
     try {
       sendJson(response, 200, readContentFile());
@@ -220,8 +130,6 @@ export async function requestListener(request, response) {
   }
 
   if (request.method === 'PUT' && pathname === '/api/content') {
-    if (!requireAuth(request, response)) return;
-
     try {
       const rawBody = await readBody(request);
       const nextContent = JSON.parse(rawBody || '{}');

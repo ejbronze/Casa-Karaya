@@ -1,6 +1,6 @@
 # Casa Karaya
 
-Casa Karaya is a guest welcome guide for a real home stay, with a polished front-end experience and a protected admin editor for updating instructions, house notes, contacts, and appliance details.
+Casa Karaya is a guest welcome guide for a real home stay, with a polished front-end experience and an unlinked admin editor for updating instructions, house notes, contacts, appliance details, and guide visibility.
 
 The project now combines:
 
@@ -10,7 +10,7 @@ The project now combines:
 - A dashboard-style apartment guide with card-based navigation
 - Detail modals for each guide item, with a focused room-by-room or appliance-by-appliance flow
 - A two-step WiFi experience that can reveal a scannable QR code for the network
-- A protected admin area at `/admin`
+- An unlinked admin editor at `/admin`
 - A content API that persists edits
 - Vercel Blob storage support for live production content
 
@@ -31,8 +31,9 @@ This keeps the landing page feeling more like an interactive hospitality dashboa
 
 ## Admin Experience
 
-The admin page at `/admin` allows you to sign in and update:
+The admin page at `/admin` allows you to update:
 
+- Guide widget visibility, so individual guide cards can be turned on or off
 - Site name, location, hero copy, and footer copy
 - Quick facts
 - Room and area instructions
@@ -50,6 +51,8 @@ The admin content model still drives the public experience, but the rendering la
 - Dashboard cards
 - Guide detail modals
 - WiFi QR reveal flow when network credentials are available
+
+The admin page is no longer linked from the public navigation. It is intended to be accessed directly at `/admin`.
 
 ## Content Storage
 
@@ -112,9 +115,9 @@ Optional:
 
 Notes:
 
-- `/admin` is served as a clean URL
+- `/admin` is served as a clean URL and is intentionally not linked from the public navigation
 - Editable content is persisted through Blob storage
-- Admin auth uses signed cookies
+- Guide widget visibility is stored with the same shared content payload
 - Health endpoint is available at `/api/health`
 - The guest guide is deployed as a branded static front-end plus serverless API routes for content and auth
 - The WiFi QR experience is generated dynamically from saved WiFi credentials in the content payload
@@ -141,6 +144,7 @@ Required environment variables:
 - Pulled env files are ignored through `.gitignore`
 - The current public UI favors card-based guide discovery over accordion-style interaction
 - Guide cards, room map overlays, and modal detail panels all read from the same saved content source
+- The apartment guide and quick-entry flow now share a single section instead of two separate public sections
 
 ## Scripts
 

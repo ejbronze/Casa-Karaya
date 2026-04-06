@@ -34,12 +34,10 @@
         <span></span><span></span><span></span>
       </button>
       <ul class="nav-links" id="nav-links">
-        <li><a href="#quick-access" class="nav-link">Quick Access</a></li>
-        <li><a href="#map-teaser" class="nav-link">Map</a></li>
         <li><a href="#apartment-guide" class="nav-link">Guide</a></li>
+        <li><a href="#map-teaser" class="nav-link">Map</a></li>
         <li><a href="#house-rules" class="nav-link">Rules</a></li>
         <li><a href="#contacts" class="nav-link emergency-link">Contacts</a></li>
-        <li><a href="/admin" class="nav-link">Admin</a></li>
       </ul>
     </div>
   </nav>
@@ -62,12 +60,12 @@
       <h1 class="hero-title" id="heroTitle">Apartment Guide</h1>
       <p class="hero-sub" id="heroSubtitle">Named for the Taíno moon goddess.<br />Your home, illuminated.</p>
       <div class="hero-actions">
-        <a href="#quick-access" class="btn-primary" id="heroCta">Explore the Guide</a>
+        <a href="#apartment-guide" class="btn-primary" id="heroCta">Explore the Guide</a>
         <button type="button" class="btn-secondary" id="openMapHero">Open Interactive Map</button>
       </div>
       <div class="hero-facts" id="heroFacts"></div>
     </div>
-    <a href="#quick-access" class="hero-scroll-hint" aria-label="Scroll down to quick access">
+    <a href="#apartment-guide" class="hero-scroll-hint" aria-label="Scroll down to the apartment guide">
       <span class="scroll-mouse" aria-hidden="true">
         <span class="scroll-wheel"></span>
       </span>
@@ -78,11 +76,13 @@
     </a>
   </section>
 
-  <section class="section quick-access" id="quick-access">
+  <section class="section quick-access" id="apartment-guide">
     <div class="container">
-      <div class="section-label">Quick Access</div>
+      <div class="section-label">Apartment Guide</div>
       <h2 class="section-title">What do you need?</h2>
+      <p class="section-sub" id="guideIntro">Everything guests usually ask first, plus the home rules and local notes that make the stay smoother.</p>
       <div class="quick-grid" id="quickGrid"></div>
+      <div class="guide-dashboard" id="guideDashboard"></div>
     </div>
   </section>
 
@@ -99,24 +99,30 @@
           <button type="button" class="btn-primary" id="openMapTeaser">Launch the Interactive Map</button>
         </div>
         <div class="map-preview-shell">
-          <div class="map-preview-grid"></div>
-          <div class="map-preview-card">
-            <span>Living Room</span>
-            <span>Kitchen</span>
-            <span>Bedrooms</span>
-            <span>Bathrooms</span>
+          <div class="map-preview-atlas"></div>
+          <div class="map-preview-routes">
+            <span class="route route-one"></span>
+            <span class="route route-two"></span>
+          </div>
+          <div class="map-preview-pin map-preview-pin-main">
+            <span class="pin-pulse"></span>
+            <span class="pin-core"></span>
+          </div>
+          <div class="map-preview-pin map-preview-pin-living"></div>
+          <div class="map-preview-pin map-preview-pin-kitchen"></div>
+          <div class="map-preview-pin map-preview-pin-bed"></div>
+          <div class="map-preview-label map-preview-label-main">Casa Karaya</div>
+          <div class="map-preview-label map-preview-label-living">Living</div>
+          <div class="map-preview-label map-preview-label-kitchen">Kitchen</div>
+          <div class="map-preview-label map-preview-label-bed">Bedrooms</div>
+          <div class="map-preview-compass" aria-hidden="true">
+            <span>N</span>
+            <span>E</span>
+            <span>S</span>
+            <span>W</span>
           </div>
         </div>
       </div>
-    </div>
-  </section>
-
-  <section class="section apartment-guide" id="apartment-guide">
-    <div class="container">
-      <div class="section-label">How-To Guide</div>
-      <h2 class="section-title">Apartment Guide</h2>
-      <p class="section-sub" id="guideIntro">Everything guests usually ask first, plus the home rules and local notes that make the stay smoother.</p>
-      <div class="guide-dashboard" id="guideDashboard"></div>
     </div>
   </section>
 
@@ -126,15 +132,6 @@
       <h2 class="section-title light">House Rules</h2>
       <p class="section-sub light">We trust our guests. These simple guidelines help preserve the experience for everyone.</p>
       <div class="rules-grid" id="rulesGrid"></div>
-    </div>
-  </section>
-
-  <section class="section neighborhood-section" id="local-guide">
-    <div class="container">
-      <div class="section-label">Local Guide</div>
-      <h2 class="section-title">Helpful Extras</h2>
-      <p class="section-sub">A few useful local notes and essentials, ready to update whenever your recommendations change.</p>
-      <div class="tips-grid" id="tipsGrid"></div>
     </div>
   </section>
 
@@ -152,12 +149,14 @@
 
   <footer class="footer">
     <div class="container">
-      <div class="footer-inner">
-        <div class="footer-brand">
-          <img src="assets/logo.png" alt="Casa Karaya" class="footer-logo" />
-          <span class="footer-logo-text" id="footerName">Casa Karaya</span>
-          <p id="footerLocation">Evaristo Morales · Santo Domingo<br />Dominican Republic</p>
-        </div>
+        <div class="footer-inner">
+          <div class="footer-brand">
+            <div class="footer-logo-shell">
+              <img src="assets/logo.png" alt="Casa Karaya" class="footer-logo" />
+            </div>
+            <span class="footer-logo-text" id="footerName">Casa Karaya</span>
+            <p id="footerLocation">Evaristo Morales · Santo Domingo<br />Dominican Republic</p>
+          </div>
         <div class="footer-moon">
           <div class="footer-moon-circle"></div>
         </div>
@@ -199,7 +198,9 @@
 
       <div class="map-loader active" id="mapLoader" aria-hidden="true">
         <div class="map-loader-core">
-          <img src="assets/logo.png" alt="" class="map-loader-logo" />
+          <div class="map-loader-logo-shell">
+            <img src="assets/logo.png" alt="" class="map-loader-logo" />
+          </div>
           <div class="map-loader-ripple"></div>
           <p>Rendering the interactive floor plan</p>
         </div>
