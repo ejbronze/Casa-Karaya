@@ -99,11 +99,11 @@
     },
     {
       "name": "Water Heater",
-      "summary": "If you want a hot shower, just give the heater a little time before using it.",
+      "summary": "Hot water is always on. It just takes a minute or two to reach the shower.",
       "instructions": [
-        "Switch the heater on at the panel before showering.",
-        "Give it about 10 to 15 minutes to warm up.",
-        "When you are done, please switch it off again."
+        "There's nothing to switch on.",
+        "Run the hot water for a minute or two until it warms up.",
+        "If it's still cold after a few minutes, message your host."
       ]
     },
     {
@@ -138,8 +138,8 @@
   ],
   "houseRules": [
     {
-      "title": "No Smoking",
-      "description": "Please keep both the apartment and the balcony smoke-free."
+      "title": "Smoking on the Balcony Only",
+      "description": "Please don't smoke indoors. Smoking is fine on the balcony, where there's an ashtray."
     },
     {
       "title": "Respect Quiet Hours",
@@ -175,11 +175,11 @@
   "contacts": [
     {
       "label": "Host",
-      "name": "Casa Karaya Host",
+      "name": "Edwin",
       "description": "Reach out here first for anything at all in the apartment, check-in questions, or if something does not feel right.",
-      "phone": "+18095550001",
-      "phoneLabel": "+1 (809) 555-0001",
-      "whatsapp": "https://wa.me/18095550001",
+      "phone": "+19173758125",
+      "phoneLabel": "+1 (917) 375-8125",
+      "whatsapp": "https://wa.me/19173758125",
       "primary": true
     },
     {
