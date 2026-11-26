@@ -378,40 +378,41 @@ saveTopButton.addEventListener('click', () => {
   editorForm.requestSubmit();
 });
 
-// Saving requires an admin session, so show a sign-in step first when needed.
+// Saving requires an admin session, so show a Google sign-in step first when needed.
 const signinPanel = document.getElementById('signinPanel');
-const signinForm = document.getElementById('signinForm');
+const FIREBASE_CONFIG = {
+  apiKey: 'AIzaSyBXaJdtZeYiyPqkNasMJYpWBwuaqUm6b14',
+  authDomain: 'casa-karaya-tv.firebaseapp.com',
+  projectId: 'casa-karaya-tv',
+  appId: '1:466359122734:web:1b6a0826836fbe851c58bf'
+};
 
 function showEditor() {
-  signinPanel.hidden = true;
+  signinPanel.classList.add('hide');
   editorPanel.classList.remove('hide');
-  editorPanel.hidden = false;
   topActions.classList.remove('hide');
   loadEditor();
 }
 
 function showSignin() {
-  editorPanel.hidden = true;
+  editorPanel.classList.add('hide');
   topActions.classList.add('hide');
-  signinPanel.hidden = false;
-  document.getElementById('signinUser').focus();
+  signinPanel.classList.remove('hide');
 }
 
-signinForm.addEventListener('submit', async (event) => {
-  event.preventDefault();
+document.getElementById('googleSignIn').addEventListener('click', async () => {
   hideStatus();
   try {
-    await fetchJson('/api/login', {
-      method: 'POST',
-      body: JSON.stringify({
-        username: document.getElementById('signinUser').value.trim(),
-        password: document.getElementById('signinPass').value
-      })
-    });
-    document.getElementById('signinPass').value = '';
+    if (!window.firebase) throw new Error('Google sign-in could not load. Check your connection and reload.');
+    if (!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
+    const result = await firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider());
+    const idToken = await result.user.getIdToken();
+    await fetchJson('/api/login', { method: 'POST', body: JSON.stringify({ idToken }) });
+    await firebase.auth().signOut();
     showEditor();
   } catch (error) {
-    showStatus(error.message, 'error');
+    if (error && error.code === 'auth/popup-closed-by-user') return;
+    showStatus(error.message || 'Sign-in did not finish.', 'error');
   }
 });
 
@@ -420,6 +421,7 @@ document.getElementById('signOutButton').addEventListener('click', async () => {
   showSignin();
 });
 
+editorPanel.classList.add('hide');
 fetchJson('/api/session')
   .then((session) => (session && session.authenticated ? showEditor() : showSignin()))
   .catch(() => showSignin());

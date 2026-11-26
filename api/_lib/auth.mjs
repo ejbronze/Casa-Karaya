@@ -2,9 +2,10 @@ import crypto from 'crypto';
 
 const SESSION_COOKIE = 'casa_karaya_session';
 const SESSION_TTL_SECONDS = 60 * 60 * 8;
-const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'changeme-casa-karaya';
-const AUTH_SECRET = process.env.AUTH_SECRET || ADMIN_PASSWORD;
+const ADMIN_USERNAME = process.env.ADMIN_USERNAME || '';
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || '';
+// Sessions are signed with a server-only secret. Never fall back to a value that is visible in the code.
+const AUTH_SECRET = process.env.AUTH_SECRET || process.env.BLOB_READ_WRITE_TOKEN || ADMIN_PASSWORD;
 
 function base64url(value) {
   return Buffer.from(value).toString('base64url');
@@ -20,6 +21,7 @@ function parseCookies(cookieHeader = '') {
 }
 
 function createSignature(payload) {
+  if (!AUTH_SECRET) throw new Error('Sign-in is not configured on the server.');
   return crypto.createHmac('sha256', AUTH_SECRET).update(payload).digest('base64url');
 }
 
@@ -35,7 +37,7 @@ function createSessionToken(username) {
 }
 
 function verifyToken(token) {
-  if (!token || !token.includes('.')) return null;
+  if (!AUTH_SECRET || !token || !token.includes('.')) return null;
 
   const [encodedPayload, signature] = token.split('.');
   const expected = createSignature(encodedPayload);
@@ -62,7 +64,7 @@ function buildCookie(token, req, maxAge) {
 }
 
 export function authenticate(username, password) {
-  return username === ADMIN_USERNAME && password === ADMIN_PASSWORD;
+  return Boolean(ADMIN_USERNAME && ADMIN_PASSWORD) && username === ADMIN_USERNAME && password === ADMIN_PASSWORD;
 }
 
 export function setSessionCookie(req, res, username) {

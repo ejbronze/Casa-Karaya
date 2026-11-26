@@ -27,14 +27,12 @@
 
     <div class="status-banner" id="statusBanner"></div>
 
-    <section class="editor-panel" id="signinPanel" hidden>
-      <form class="panel-section" id="signinForm" autocomplete="on" style="max-width:460px">
+    <section class="editor-panel hide" id="signinPanel">
+      <div class="panel-section" id="signinForm" style="max-width:460px">
         <div class="panel-section-header"><h2 class="panel-title">Sign in to edit the guide</h2></div>
-        <p class="admin-subtitle">Use the admin username and password saved in your Vercel project settings (ADMIN_USERNAME and ADMIN_PASSWORD).</p>
-        <div class="field"><label for="signinUser">Username</label><input id="signinUser" name="username" autocomplete="username" required></div>
-        <div class="field"><label for="signinPass">Password</label><input id="signinPass" name="password" type="password" autocomplete="current-password" required></div>
-        <div class="admin-actions"><button class="button button-primary" type="submit">Sign in</button></div>
-      </form>
+        <p class="admin-subtitle">Use your Google account. Only the host's Gmail can edit.</p>
+        <div class="admin-actions"><button class="button button-primary" type="button" id="googleSignIn">Sign in with Google</button></div>
+      </div>
     </section>
 
     <section class="editor-panel" id="editorPanel">
@@ -145,6 +143,8 @@
     </section>
   </main>
 
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
   <script src="admin.js"></script>
 </body>
 </html>
