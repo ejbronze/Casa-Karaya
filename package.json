@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "node server.js",
     "start": "NODE_ENV=production node server.js",
-    "check": "node --check server.js && node --check script.js && node --check admin.js && node --check api/_lib/auth.mjs && node --check api/_lib/content-store.mjs && node --check api/content.mjs && node --check api/login.mjs && node --check api/logout.mjs && node --check api/session.mjs && node --check api/health.mjs"
+    "check": "node --check server.js && node --check script.js && node --check admin.js && node --check api/_lib/auth.mjs && node --check api/_lib/content-store.mjs && node --check api/content.mjs && node --check api/login.mjs && node --check api/logout.mjs && node --check api/session.mjs && node --check api/health.mjs && node --check api/video-upload.mjs && node --check api/_lib/google.mjs"
   },
   "engines": {
     "node": ">=18"
