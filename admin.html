@@ -20,11 +20,22 @@
       </div>
       <div class="admin-actions" id="topActions">
         <a href="/" class="button button-secondary">View Guest Page</a>
+        <button class="button button-secondary" type="button" id="signOutButton">Sign out</button>
         <button class="button button-primary" type="button" id="saveTopButton">Save Changes</button>
       </div>
     </header>
 
     <div class="status-banner" id="statusBanner"></div>
+
+    <section class="editor-panel" id="signinPanel" hidden>
+      <form class="panel-section" id="signinForm" autocomplete="on" style="max-width:460px">
+        <div class="panel-section-header"><h2 class="panel-title">Sign in to edit the guide</h2></div>
+        <p class="admin-subtitle">Use the admin username and password saved in your Vercel project settings (ADMIN_USERNAME and ADMIN_PASSWORD).</p>
+        <div class="field"><label for="signinUser">Username</label><input id="signinUser" name="username" autocomplete="username" required></div>
+        <div class="field"><label for="signinPass">Password</label><input id="signinPass" name="password" type="password" autocomplete="current-password" required></div>
+        <div class="admin-actions"><button class="button button-primary" type="submit">Sign in</button></div>
+      </form>
+    </section>
 
     <section class="editor-panel" id="editorPanel">
       <form id="editorForm">

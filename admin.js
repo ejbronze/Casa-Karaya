@@ -378,6 +378,48 @@ saveTopButton.addEventListener('click', () => {
   editorForm.requestSubmit();
 });
 
-editorPanel.classList.remove('hide');
-topActions.classList.remove('hide');
-loadEditor();
+// Saving requires an admin session, so show a sign-in step first when needed.
+const signinPanel = document.getElementById('signinPanel');
+const signinForm = document.getElementById('signinForm');
+
+function showEditor() {
+  signinPanel.hidden = true;
+  editorPanel.classList.remove('hide');
+  editorPanel.hidden = false;
+  topActions.classList.remove('hide');
+  loadEditor();
+}
+
+function showSignin() {
+  editorPanel.hidden = true;
+  topActions.classList.add('hide');
+  signinPanel.hidden = false;
+  document.getElementById('signinUser').focus();
+}
+
+signinForm.addEventListener('submit', async (event) => {
+  event.preventDefault();
+  hideStatus();
+  try {
+    await fetchJson('/api/login', {
+      method: 'POST',
+      body: JSON.stringify({
+        username: document.getElementById('signinUser').value.trim(),
+        password: document.getElementById('signinPass').value
+      })
+    });
+    document.getElementById('signinPass').value = '';
+    showEditor();
+  } catch (error) {
+    showStatus(error.message, 'error');
+  }
+});
+
+document.getElementById('signOutButton').addEventListener('click', async () => {
+  try { await fetchJson('/api/logout', { method: 'POST' }); } catch { /* already signed out */ }
+  showSignin();
+});
+
+fetchJson('/api/session')
+  .then((session) => (session && session.authenticated ? showEditor() : showSignin()))
+  .catch(() => showSignin());
