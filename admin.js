@@ -207,6 +207,35 @@ function renderEditor(content) {
   renderRepeater('houseRules', currentContent.houseRules || []);
   renderRepeater('localTips', currentContent.localTips || []);
   renderRepeater('contacts', currentContent.contacts || []);
+  markPortalManaged(currentContent);
+}
+
+// Wi-Fi, house rules, contacts and local picks are edited in the Casa Karaya Concierge portal,
+// which keeps the TV and this guide in step. Show them here as read-only so nothing drifts apart.
+function markPortalManaged(content) {
+  document.querySelectorAll('.portal-note').forEach((n) => n.remove());
+  const managed = content.managedByPortal || [];
+  const where = { quickFacts: 'Screen → Wi-Fi', houseRules: 'Screen → House rules', localTips: 'Screen → Neighborhood map (your picks and city spots)', contacts: 'Screen → Host & WhatsApp and Building concierge' };
+  ['quickFacts', 'houseRules', 'localTips', 'contacts'].forEach((type) => {
+    const key = type === 'quickFacts' ? 'wifi' : type;
+    if (!managed.includes(key)) return;
+    const list = repeaters[type];
+    const section = list.closest('.panel-section');
+    const note = document.createElement('p');
+    note.className = 'helper-copy portal-note';
+    note.innerHTML = `${type === 'quickFacts' ? 'The WiFi entry is' : 'This section is'} managed in the <a href="https://casa-karaya-admin.vercel.app/#screen" target="_blank" rel="noopener">Casa Karaya Concierge portal</a> (${where[type]}), so the TV and this guide always match.`;
+    list.before(note);
+    if (type === 'quickFacts') {
+      list.querySelectorAll('.repeater-item').forEach((item) => {
+        const label = item.querySelector('input');
+        if (label && /wifi/i.test(label.value)) item.querySelectorAll('input, textarea, button').forEach((el) => { el.disabled = true; });
+      });
+      return;
+    }
+    list.querySelectorAll('input, textarea, button, select').forEach((el) => { el.disabled = true; });
+    const add = section && section.querySelector('[data-add-list-item]');
+    if (add) add.hidden = true;
+  });
 }
 
 function readWidgetVisibility() {
@@ -281,7 +310,8 @@ function collectContentFromForm() {
     appliances: readRepeater('appliances'),
     houseRules: readRepeater('houseRules'),
     localTips: readRepeater('localTips'),
-    contacts: readRepeater('contacts')
+    contacts: readRepeater('contacts'),
+    ...(currentContent && currentContent.managedByPortal ? { managedByPortal: currentContent.managedByPortal } : {})
   };
 }
 

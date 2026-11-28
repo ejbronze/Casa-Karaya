@@ -1852,3 +1852,4 @@ a, button { -webkit-tap-highlight-color: transparent; }
 .contact-ico { width: 44px; height: 44px; border-radius: 14px; background: rgba(217,182,122,0.14); color: #d9b67a; display: grid; place-items: center; margin-bottom: 14px; }
 .contact-ico svg { width: 24px; height: 24px; }
 @media (prefers-reduced-motion: reduce) { .quick-btn.ck-in, .rule-item.ck-in, .emergency-card.ck-in { animation: none; } }
+.wifi-qr-toggle { width: 100%; margin-top: 16px; }

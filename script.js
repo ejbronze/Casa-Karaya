@@ -319,7 +319,7 @@ function renderQuickAccess(content) {
     { id: 'rules', label: 'House Rules', target: 'house-rules', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>`, detail: 'Stay details' },
     { id: 'tips', label: 'Local Notes', target: 'guide-local-notes', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>`, detail: 'Nearby favorites' },
     { id: 'tv', label: 'TV / Streaming', target: 'guide-smart-tv', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="15" rx="2"/><polyline points="17 2 12 7 7 2"/></svg>`, detail: tv?.summary || 'Entertainment' }
-  ].filter((button) => !button.target || !button.target.startsWith('guide-') && !button.target.startsWith('room-') || visibleGuideIds.has(button.target));
+  ].filter((button) => button.id !== 'map').filter((button) => !button.target || !button.target.startsWith('guide-') && !button.target.startsWith('room-') || visibleGuideIds.has(button.target));
 
   const ck = window.CKIcons;
   if (ck) {
@@ -413,7 +413,7 @@ function renderGuideModalView(item, view = 'details') {
   guideModalIcon.innerHTML = item.icon;
   guideModalTitle.textContent = item.title;
   guideModalSummary.textContent = item.summary;
-  guideModalShell.classList.toggle('guide-modal-shell-tappable', item.type === 'wifi' && Boolean(item.qrUrl));
+  guideModalShell.classList.remove('guide-modal-shell-tappable');
 
   if (item.type === 'wifi' && view === 'qr') {
     guideModalBody.innerHTML = `
@@ -424,7 +424,7 @@ function renderGuideModalView(item, view = 'details') {
           <strong>${escapeHtml(item.network)}</strong>
           <span>${escapeHtml(item.password ? `Password: ${item.password}` : 'Open network')}</span>
         </div>
-        <p class="guide-note">Tap anywhere on this panel to return to the network details.</p>
+        <button type="button" class="btn-secondary wifi-qr-toggle" data-wifi-view="details">Back to network details</button>
       </div>
     `;
     attachCopyActions();
@@ -462,7 +462,8 @@ function buildGuideItems(content) {
       { label: 'Details', value: wifi?.detail || 'Update in admin' }
     ])}
     <p class="guide-note">${escapeHtml(site.heroSubtitle || 'Keep your guest essentials clear and easy to copy.')}</p>
-    <div class="tip-box"><strong>Tap the network name to copy it.</strong> Tap this panel again to reveal a scannable WiFi code for guests.</div>
+    <div class="tip-box"><strong>Tap the network name to copy it.</strong></div>
+    <button type="button" class="btn-primary wifi-qr-toggle" data-wifi-view="qr">Show QR code</button>
   `;
 
   const wifiItem = {
@@ -707,11 +708,9 @@ guideModal.querySelector('[data-close-guide]').addEventListener('click', closeGu
 zoneClose.addEventListener('click', closeZonePanel);
 
 guideModalShell.addEventListener('click', (event) => {
-  if (!currentGuideModalData || currentGuideModalData.type !== 'wifi') return;
-  if (event.target.closest('.guide-modal-close') || event.target.closest('.copy-text')) return;
-  if (!currentGuideModalData.qrUrl) return;
-
-  guideModalView = guideModalView === 'details' ? 'qr' : 'details';
+  const toggle = event.target.closest('[data-wifi-view]');
+  if (!toggle || !currentGuideModalData || !currentGuideModalData.qrUrl) return;
+  guideModalView = toggle.dataset.wifiView;
   renderGuideModalView(currentGuideModalData, guideModalView);
 });
 
