@@ -1853,3 +1853,5 @@ a, button { -webkit-tap-highlight-color: transparent; }
 .contact-ico svg { width: 24px; height: 24px; }
 @media (prefers-reduced-motion: reduce) { .quick-btn.ck-in, .rule-item.ck-in, .emergency-card.ck-in { animation: none; } }
 .wifi-qr-toggle { width: 100%; margin-top: 16px; }
+.rule-text-solo { align-self: center; }
+.rule-text-solo span { font-size: 1rem; line-height: 1.5; color: rgba(255,248,239,0.9); }

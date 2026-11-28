@@ -571,9 +571,8 @@ function renderRules(content) {
       <div class="rule-icon">
         ${(window.CKIcons && window.CKIcons.step(`${rule.title} ${rule.description}`)) || '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>'}
       </div>
-      <div class="rule-text">
-        <strong>${escapeHtml(rule.title)}</strong>
-        <span>${escapeHtml(rule.description)}</span>
+      <div class="rule-text${rule.description ? '' : ' rule-text-solo'}">
+        ${rule.description ? `<strong>${escapeHtml(rule.title)}</strong><span>${escapeHtml(rule.description)}</span>` : `<span>${escapeHtml(rule.title)}</span>`}
       </div>
     </div>
   `).join('');
