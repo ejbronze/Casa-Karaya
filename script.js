@@ -40,6 +40,11 @@ let mapHasLoadedOnce = false;
 let currentGuideModalData = null;
 let guideModalView = 'details';
 let currentGuideItems = [];
+if (window.CKIcons) {
+  const ckStyle = document.createElement('style');
+  ckStyle.textContent = window.CKIcons.css(['.cki-play', '.quick-btn:hover', '.quick-btn:focus-visible', '.guide-modal-icon', '.zone-icon', '.rule-item:hover', '.emergency-card:hover']);
+  document.head.appendChild(ckStyle);
+}
 
 const defaultZoneMeta = {
   living: { title: 'Living / Dining', icon: iconTv() },
@@ -128,7 +133,10 @@ function createBulletList(items) {
     return '<p class="guide-note">Instructions will appear here.</p>';
   }
 
-  return `<ul>${items.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>`;
+  return `<ul>${items.map((item) => {
+    const icon = window.CKIcons ? window.CKIcons.step(item) : '';
+    return icon ? `<li class="has-ico"><span class="li-ico">${icon}</span>${escapeHtml(item)}</li>` : `<li>${escapeHtml(item)}</li>`;
+  }).join('')}</ul>`;
 }
 
 function toRoomHtml(title, items) {
@@ -313,6 +321,19 @@ function renderQuickAccess(content) {
     { id: 'tv', label: 'TV / Streaming', target: 'guide-smart-tv', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="15" rx="2"/><polyline points="17 2 12 7 7 2"/></svg>`, detail: tv?.summary || 'Entertainment' }
   ].filter((button) => !button.target || !button.target.startsWith('guide-') && !button.target.startsWith('room-') || visibleGuideIds.has(button.target));
 
+  const ck = window.CKIcons;
+  if (ck) {
+    // the laundry and coffee guides get their own tiles, right after hot water
+    const extra = [
+      { id: 'washer', label: 'Laundry', target: 'guide-washer-and-dryer', detail: findAppliance(content.appliances || [], 'Washer and Dryer')?.summary || 'Washer and dryer' },
+      { id: 'coffee', label: 'Coffee', target: 'guide-coffee-machine', detail: findAppliance(content.appliances || [], 'Coffee Machine')?.summary || 'Coffee machine' }
+    ].filter((b) => visibleGuideIds.has(b.target));
+    const at = buttons.findIndex((b) => b.id === 'water');
+    buttons.splice(at >= 0 ? at + 1 : buttons.length, 0, ...extra);
+    const keys = { wifi: 'wifi', ac: 'ac', water: 'heater', washer: 'washer', coffee: 'coffee', kitchen: 'kitchen', tips: 'pin', tv: 'tv' };
+    buttons.forEach((b) => { if (keys[b.id]) b.icon = ck.icon(keys[b.id]); });
+  }
+
   quickGrid.innerHTML = buttons.map((button) => `
     <button class="quick-btn" data-target="${button.target || ''}" data-action="${button.action || ''}">
       <div class="quick-icon ${button.id === 'map' ? 'map-icon' : ''}">${button.icon}</div>
@@ -321,6 +342,7 @@ function renderQuickAccess(content) {
     </button>
   `).join('');
 
+  watchIcons(quickGrid.querySelectorAll('.quick-btn'));
   quickGrid.querySelectorAll('.quick-btn').forEach((button) => {
     button.addEventListener('click', () => {
       if (button.dataset.action === 'open-map') {
@@ -449,7 +471,7 @@ function buildGuideItems(content) {
     kicker: 'Guest Essential',
     title: 'WiFi & Internet',
     summary: wifi?.detail || 'Tap in for network details and a scannable QR code.',
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><circle cx="12" cy="20" r="1" fill="currentColor"/></svg>`,
+    icon: window.CKIcons ? window.CKIcons.icon('wifi') : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><circle cx="12" cy="20" r="1" fill="currentColor"/></svg>`,
     bodyHtml: wifiBody,
     cta: 'View WiFi',
     theme: 'wifi',
@@ -465,7 +487,7 @@ function buildGuideItems(content) {
     title: appliance.name,
     summary: appliance.summary || 'Open for step-by-step instructions.',
     icon: applianceIconFor(appliance.name),
-    bodyHtml: `${appliance.summary ? `<p class="guide-note">${escapeHtml(appliance.summary)}</p>` : ''}${createBulletList(appliance.instructions)}`,
+    bodyHtml: createBulletList(appliance.instructions),
     cta: 'Open instructions',
     theme: 'appliance'
   }));
@@ -477,7 +499,7 @@ function buildGuideItems(content) {
     title: area.name,
     summary: area.summary || 'Open for the room details and guest notes.',
     icon: roomIconFor(area.name),
-    bodyHtml: `${area.summary ? `<p class="guide-note">${escapeHtml(area.summary)}</p>` : ''}${createBulletList(area.instructions)}`,
+    bodyHtml: createBulletList(area.instructions),
     cta: 'Open room guide',
     theme: 'room'
   }));
@@ -488,7 +510,7 @@ function buildGuideItems(content) {
     kicker: 'Local Guide',
     title: 'Helpful Extras',
     summary: 'Nearby favorites, useful local notes, and stay extras in one place.',
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>`,
+    icon: window.CKIcons ? window.CKIcons.icon('pin') : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>`,
     bodyHtml: localTips.length ? localTips.map((tip) => `
       <div class="tip-card">
         <h3>${escapeHtml(tip.title)}</h3>
@@ -508,7 +530,21 @@ function renderGuide(content) {
   currentGuideItems = buildGuideItems(content);
 }
 
+// Icons play when they scroll into view (a few seconds), and whenever they're hovered or open
+function watchIcons(nodes) {
+  if (!('IntersectionObserver' in window)) return;
+  const io = new IntersectionObserver((entries) => entries.forEach((e) => {
+    if (!e.isIntersecting) return;
+    const el = e.target;
+    el.classList.add('ck-in', 'cki-play');
+    window.setTimeout(() => el.classList.remove('cki-play'), 3600);
+    io.unobserve(el);
+  }), { threshold: 0.45 });
+  nodes.forEach((n, i) => { n.style.setProperty('--ck-delay', `${(i % 2) * 90 + Math.floor(i / 2) * 40}ms`); io.observe(n); });
+}
+
 function applianceIconFor(name) {
+  if (window.CKIcons) return window.CKIcons.appliance(name);
   const lower = name.toLowerCase();
   if (lower.includes('air')) return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="8" rx="2"/><path d="M7 11v4a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-4"/><path d="M12 15v4"/><path d="M8 19h8"/></svg>`;
   if (lower.includes('water')) return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10c0-5.5-4.5-10-10-10zm0 0c0 0-4 6-4 10a4 4 0 0 0 8 0c0-4-4-10-4-10z"/></svg>`;
@@ -518,6 +554,7 @@ function applianceIconFor(name) {
 }
 
 function roomIconFor(name) {
+  if (window.CKIcons) return window.CKIcons.room(name);
   const lower = name.toLowerCase();
   if (lower.includes('kitchen')) return iconKitchen();
   if (lower.includes('living')) return iconTv();
@@ -531,7 +568,7 @@ function renderRules(content) {
   rulesGrid.innerHTML = rules.map((rule) => `
     <div class="rule-item">
       <div class="rule-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        ${(window.CKIcons && window.CKIcons.step(`${rule.title} ${rule.description}`)) || '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>'}
       </div>
       <div class="rule-text">
         <strong>${escapeHtml(rule.title)}</strong>
@@ -545,6 +582,7 @@ function renderContacts(content) {
   const contacts = content.contacts || [];
   contactsGrid.innerHTML = contacts.map((contact, index) => `
     <div class="emergency-card ${index === 0 ? 'primary-contact' : ''}">
+      ${window.CKIcons ? `<div class="contact-ico">${window.CKIcons.contact(contact.label)}</div>` : ''}
       <div class="emergency-card-label">${escapeHtml(contact.label)}</div>
       <div class="emergency-card-name">${escapeHtml(contact.name)}</div>
       <p class="emergency-card-copy">${escapeHtml(contact.description || '')}</p>
@@ -611,6 +649,7 @@ function renderContent(content) {
   renderQuickAccess(content);
   renderRules(content);
   renderContacts(content);
+  watchIcons(document.querySelectorAll('.rule-item, .emergency-card'));
   currentZoneData = buildZoneData(content);
 }
 
